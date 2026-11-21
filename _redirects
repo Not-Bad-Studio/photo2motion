@@ -1,0 +1,29 @@
+# photo2motion.studio (Netlify project "photo2motion", from github.com/Not-Bad-Studio/photo2motion).
+# The first rule that matches wins. Pages need no rule: Netlify serves hospitality.html at /hospitality.
+
+# www goes to the bare domain.
+https://www.photo2motion.studio/*   https://photo2motion.studio/:splat   301!
+http://www.photo2motion.studio/*    https://photo2motion.studio/:splat   301!
+
+# Icons at the root, where browsers and Google's favicon fetcher look first. The pages link the files in /images/brand.
+/favicon.ico            /images/brand/p2m-favicon.ico            200!
+/apple-touch-icon.png   /images/brand/p2m-apple-touch-icon.png   200!
+
+# Other names the home and sector pages have had (the files were photo2motion.html and p2m-<sector>.html on the
+# Not Bad Studio site until the move).
+/index.html          /              301!
+/photo2motion        /              301!
+/photo2motion.html   /              301!
+/p2m-hospitality     /hospitality   301!
+/p2m-property        /property      301!
+/p2m-marine          /marine        301!
+
+# The private client pages, photo2motion.studio/for/<page>/, come from the demos site (Netlify project nbs-motion-demos,
+# built and deployed from ~/Sites/motion-demos). /for on its own has no page, so it goes home. Netlify treats /for and
+# /for/ as one path, so /for must never point at /for/ (that looped until 21 Nov 2026).
+/for     /                                              301!
+/for/*   https://nbs-motion-demos.netlify.app/:splat    200!
+
+# Checkout, free clips, the Stripe webhook and the jobs board still run on the Not Bad Studio site, with their keys and
+# the Netlify forms that email each order. Forward them there until they move (stage 3 in README.md).
+/api/*   https://www.notbadstudio.com/api/:splat        200!

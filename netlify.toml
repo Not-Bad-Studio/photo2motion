@@ -1,0 +1,4 @@
+# photo2motion.studio: a static site with no build step. Netlify publishes the repo as it is.
+# Redirects are in _redirects, headers in _headers.
+[build]
+  publish = "."

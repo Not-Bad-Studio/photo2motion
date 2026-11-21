@@ -1,0 +1,7 @@
+# photo2motion.studio's robots.txt (copied by motion-demos/tools/sync_p2m_site.py).
+User-agent: *
+Allow: /
+Disallow: /jobs
+Disallow: /for/
+
+Sitemap: https://photo2motion.studio/sitemap.xml

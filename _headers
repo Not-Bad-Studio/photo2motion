@@ -1,0 +1,9 @@
+# Pages that must stay out of search even if something links to them (they carry noindex tags too, except holding).
+/thanks
+  X-Robots-Tag: noindex
+/jobs
+  X-Robots-Tag: noindex, nofollow
+/holding
+  X-Robots-Tag: noindex
+/holding.html
+  X-Robots-Tag: noindex
