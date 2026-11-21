@@ -3,7 +3,9 @@
 The website for Photo2Motion, a Not Bad Studio service that turns a business's existing professional photos into
 short films. Netlify publishes this repo as it is (no build step) whenever `main` changes: Netlify project
 `photo2motion` (https://photo2motion.netlify.app), with team login on previews only, like the studio's other sites.
-Each production deploy uses 15 Netlify credits, so batch changes into one push.
+Each production deploy uses 15 Netlify credits, so batch changes into one push. Netlify's GitHub app sees only the
+repos picked for it (github.com/organizations/Not-Bad-Studio/settings/installations, Netlify, Configure); this one was
+added on 21 Nov 2026. A new repo has to be added there too, or its pushes won't publish.
 
 | Page | File |
 |---|---|
