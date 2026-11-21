@@ -19,28 +19,29 @@ added on 21 Nov 2026. A new repo has to be added there too, or its pushes won't 
 
 ## Don't edit the pages by hand
 
-The pages are generated on the studio's Mac from `~/Sites/motion-demos` (not in this repo: it holds clients' photos):
+The pages are generated on the studio's Mac by the tools in `~/Sites/motion-demos` (the private repo
+Not-Bad-Studio/photo2motion-tools; the clients' photos stay on the Mac), which write straight into this folder:
 
 ```bash
 cd ~/Sites/motion-demos
-python3 tools/build_p2m_sectors.py   # builds the home page, then the three sector pages
-python3 tools/sync_p2m_site.py       # copies them, and only the files they use, into this repo
+python3 tools/build_p2m_sectors.py   # builds the home page, the three sector pages, thanks.html and 404.html
 ```
 
-`images/`, `videos/` and `fonts/` hold exactly the files the pages use; the sync removes anything else. `robots.txt`
-and `sitemap.xml` come from the build too. `_redirects`, `_headers`, `netlify.toml` and this README are edited here.
+Then commit and push this repo to publish. The build also writes `sitemap.xml`, the icons and the films, posters and
+photos in `images/` and `videos/`. `jobs.html`, `holding.html`, `robots.txt`, `_redirects`, `_headers`, `netlify.toml`
+and this README are edited here by hand.
 
 ## Moving out of the Not Bad Studio site
 
 Until 21 November 2026 these pages lived in the `notbadstudio` repo and Netlify project, with photo2motion.studio as a
 second address on it. The move happens in stages so payments and the free clip never stop working:
 
-1. **This repo and its Netlify project run alongside** on the project's netlify.app address. photo2motion.studio is
-   still served by the `notbadstudio` project, and `sync_p2m_site.py` copies each build across.
-2. **photo2motion.studio moves here**: the domain moves to this Netlify project, GoDaddy's `www` CNAME points at it,
-   the builders write straight into this repo, and the Photo2Motion pages leave the `notbadstudio` repo. The hidden
-   forms `motion-clip`, `p2m-order` and `p2m-paid` must stay registered on the `notbadstudio` project, because the
-   functions there post each free clip and order to them.
+1. **Done:** this repo and its Netlify project ran alongside on the project's netlify.app address.
+2. **Done 21 Nov 2026:** photo2motion.studio moved to this Netlify project, the builders write straight into this
+   repo, and the Photo2Motion pages left the `notbadstudio` repo. Its `p2m-forms.html` keeps the hidden forms
+   `motion-clip`, `p2m-order` and `p2m-paid` registered there, because the functions there post each free clip and
+   order to them. Still to tidy: GoDaddy's `www` CNAME points at notbadstudio.netlify.app (it works, as Netlify routes
+   by address); point it at photo2motion.netlify.app.
 3. **Later, the functions**: checkout, free clip, Stripe webhook and jobs board move here with their keys
    (`STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `JOBS_BOARD_KEY`, set in Netlify by the account owner), and Stripe's webhook
    points at photo2motion.studio. Until then `_redirects` forwards `/api/*` to www.notbadstudio.com.
