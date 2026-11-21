@@ -1,7 +1,9 @@
 # photo2motion.studio
 
 The website for Photo2Motion, a Not Bad Studio service that turns a business's existing professional photos into
-short films. Netlify publishes this repo as it is (no build step) whenever `main` changes.
+short films. Netlify publishes this repo as it is (no build step) whenever `main` changes: Netlify project
+`photo2motion` (https://photo2motion.netlify.app), with team login on previews only, like the studio's other sites.
+Each production deploy uses 15 Netlify credits, so batch changes into one push.
 
 | Page | File |
 |---|---|
