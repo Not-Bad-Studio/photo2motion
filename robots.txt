@@ -1,4 +1,4 @@
-# photo2motion.studio's robots.txt (copied by motion-demos/tools/sync_p2m_site.py).
+# photo2motion.studio's robots.txt (edited here by hand).
 User-agent: *
 Allow: /
 Disallow: /jobs

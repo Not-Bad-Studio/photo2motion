@@ -561,11 +561,14 @@ h1, h2, h3 { text-wrap: balance; }
   header .nav-l { display: none !important; }
   header .nav-logo { order: -1; margin-right: auto; gap: 10px !important; }
   header .nav-logo span { font-size: 20px !important; }
-  header .nav-logo .p2m-lockup img { width: auto; height: 34px; }  /* the animated logo; 31px until 10% bigger (11 Nov 2026) */
-  header .nav-r { gap: 0 !important; }
+  /* The logo, "Get a free clip" and the menu button all fit on a 390px phone (user, 22 Nov 2026: "fix the nav spacing on
+     mobile with the free clip button": at 34px the logo pushed the menu button off the screen). */
+  header .nav-logo { flex: 0 1 auto; min-width: 0; }
+  header .nav-logo .p2m-lockup img { display: block; width: auto; height: 30px; }  /* the animated logo; 34px until 22 Nov 2026 */
+  header .nav-r { gap: 0 !important; flex: none; }
   header .nav-r > :not(a[style*="#E4572E"]) { display: none !important; }
-  header .nav-r > a[style*="#E4572E"] { height: 40px !important; padding: 0 16px !important; font-size: 14px; white-space: nowrap; }
-  .p2m-burger { display: inline-flex; flex-direction: column; justify-content: center; gap: 5px; width: 44px; height: 44px;
+  header .nav-r > a[style*="#E4572E"] { height: 38px !important; padding: 0 14px !important; font-size: 14px; white-space: nowrap; }
+  .p2m-burger { display: inline-flex; flex: none; flex-direction: column; justify-content: center; gap: 5px; width: 44px; height: 44px;
     margin-right: -10px; padding: 0 11px; border: 0; background: none; cursor: pointer; }
   .p2m-burger span { display: block; height: 2px; border-radius: 1px; background: #16263F; transition: transform .25s ease, opacity .2s ease; }
   .p2m-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -596,11 +599,13 @@ h1, h2, h3 { text-wrap: balance; }
   header nav.nav { gap: 6px !important; padding: 10px 12px !important; }
   header .nav-logo { gap: 8px !important; }
   header .nav-logo span { font-size: 17px !important; }
-  header .nav-logo .p2m-lockup img { width: auto; height: 29px; }  /* 26px until 10% bigger */
+  header .nav-logo .p2m-lockup img { width: auto; height: 26px; }  /* 29px until 22 Nov 2026 */
   header .nav-r > a[style*="#E4572E"] { height: 36px !important; padding: 0 12px !important; font-size: 13px; }
   .p2m-burger { width: 40px; padding: 0 9px; margin-right: -8px; }
 }
-@media (max-width: 349px) { header .nav-logo span { display: none; } }   /* 320px: the mark alone */
+/* 320px: the mark alone. The lockup is one image with the name in it, so it is cropped to the mark on its left. */
+@media (max-width: 349px) { header .nav-logo span { display: none; }
+  header .nav-logo .p2m-lockup img { width: 30px; height: 26px; object-fit: cover; object-position: left center; } }
 @media (prefers-reduced-motion: reduce) { .p2m-burger span { transition: none; } .p2m-menu:not([hidden]) { animation: none; } }
 
 
@@ -909,6 +914,10 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 <a href="https://www.notbadstudio.com/services" style="color: #F3F1EC; text-decoration: none">Services</a>
 <a href="https://www.notbadstudio.com/our-work" style="color: #F3F1EC; text-decoration: none">Our work</a>
 <a href="https://www.notbadstudio.com/contact" style="color: #F3F1EC; text-decoration: none">Contact</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; align-self: flex-start">
+<span style="font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #AEB8C7">Follow</span>
+<a href="https://www.instagram.com/photo2motion.studio/" rel="me" style="color: #F3F1EC; text-decoration: none">Instagram</a>
 </div>
 </div>
 </div>
