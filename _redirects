@@ -18,11 +18,11 @@ http://www.photo2motion.studio/*    https://photo2motion.studio/:splat   301!
 /p2m-property        /property      301!
 /p2m-marine          /marine        301!
 
-# The private client pages, photo2motion.studio/for/<page>/, come from the demos site (Netlify project nbs-motion-demos,
+# The private client pages, photo2motion.studio/for/<page>/, come from the demos site (Netlify project photo2motion-demos, nbs-motion-demos until 24 Nov 2026,
 # built and deployed from ~/Sites/motion-demos). /for on its own has no page, so it goes home. Netlify treats /for and
 # /for/ as one path, so /for must never point at /for/ (that looped until 21 Nov 2026).
 /for     /                                              301!
-/for/*   https://nbs-motion-demos.netlify.app/:splat    200!
+/for/*   https://photo2motion-demos.netlify.app/:splat    200!
 
 # Delivered films, photo2motion.studio/get/<token>/, come from the photo2motion-files project (built and deployed by
 # motion-demos/tools/deliver.py; its edge function ends each link after 30 days). /get on its own has no page, and
