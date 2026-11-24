@@ -24,6 +24,12 @@ http://www.photo2motion.studio/*    https://photo2motion.studio/:splat   301!
 /for     /                                              301!
 /for/*   https://nbs-motion-demos.netlify.app/:splat    200!
 
+# Delivered films, photo2motion.studio/get/<token>/, come from the photo2motion-files project (built and deployed by
+# motion-demos/tools/deliver.py; its edge function ends each link after 30 days). /get on its own has no page, and
+# like /for it must never point at /get/.
+/get     /                                                    301!
+/get/*   https://photo2motion-files.netlify.app/get/:splat   200!
+
 # Checkout, free clips, the Stripe webhook and the jobs board still run on the Not Bad Studio site, with their keys and
 # the Netlify forms that email each order. Forward them there until they move (stage 3 in README.md).
 /api/*   https://www.notbadstudio.com/api/:splat        200!

@@ -70,6 +70,13 @@ dialog::backdrop { background: var(--shade); }
 textarea { width: 100%; min-height: 70px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font: 400 15px/1.45 var(--text); resize: vertical; }
 ol.history { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
 .close { width: 36px; height: 36px; border-radius: 18px; border: 0; background: var(--chip); color: var(--ink); font-size: 20px; line-height: 1; }
+.link-box { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 12px; background: var(--bg); }
+.link-box a.url { color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
+.link-box .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.link-box .ends { margin: 0; font-size: 14px; color: var(--muted); }
+.link-box .ends b { color: var(--ink); }
+.link-box .ends.over b { color: var(--accent); }
+ol.downloads { margin: 0; padding-left: 18px; display: grid; gap: 2px; font-size: 13px; color: var(--muted); }
 [hidden] { display: none !important; }
 </style>
 </head>
@@ -143,6 +150,14 @@ ol.history { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 
     return (j.plan || KIND[j.kind] || "Job") + (j.monthly ? " (monthly)" : "") + (add.length ? " + " + add.join(", ") : "");
   }
   function paid(j) { return j.stripe && j.stripe.amount != null ? pounds(j.stripe.amount) + " paid" : j.total ? pounds(j.total) : ""; }
+  function longDate(iso) { return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }); }
+  function linkOver(d) { return !!(d && d.endsAt && Date.now() > Date.parse(d.endsAt)); }
+  function linkLine(d) {
+    if (!d || !d.endsAt) return "";
+    var n = d.downloadCount || 0;
+    return (linkOver(d) ? "Link ended " : "Link until ") + new Date(d.endsAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) +
+      " · " + n + " download" + (n === 1 ? "" : "s");
+  }
   function pillClass(s) { return s === "paid" || s === "new" ? "pill need" : s === "delivered" ? "pill done" : "pill"; }
 
   async function api(path, opts) {
@@ -187,6 +202,7 @@ ol.history { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 
           el("b", { text: who(j) }),
           el("span", { class: "sub", text: what(j) }),
           el("span", { class: "sub", text: KIND[j.kind] + " · " + (j.photos || []).length + " photo" + ((j.photos || []).length === 1 ? "" : "s") + " · " + when(j.updatedAt) + (j.test ? " · test" : "") }),
+          j.delivery ? el("span", { class: "sub", text: linkLine(j.delivery) }) : null,
         ]));
       });
       box.appendChild(el("section", { class: "group" }, [el("h2", {}, [g[0], el("small", { text: String(list.length) })]), cards]));
@@ -226,6 +242,7 @@ ol.history { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 
       el("button", { type: "button", class: "close", "aria-label": "Close", text: "×", onclick: function () { state.open = null; $("detail").close(); } }),
     ]));
     sheet.appendChild(el("div", {}, [el("h2", { text: "Move it on" }), steps]));
+    if (j.delivery && j.delivery.url) sheet.appendChild(deliveryBox(j));
     sheet.appendChild(facts);
     sheet.appendChild(el("div", {}, [el("h2", {}, ["Photos", el("small", { text: (j.photos || []).length ? String(j.photos.length) : "none yet: they may send them after paying" })]), photos]));
     sheet.appendChild(el("div", { style: "display: flex; flex-direction: column; gap: 8px" }, [el("h2", { text: "Add a note" }), note,
@@ -234,6 +251,7 @@ ol.history { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 
     sheet.querySelector("#is-test").checked = !!j.test;
     sheet.appendChild(el("div", {}, [el("h2", { text: "History" }), history]));
     if (!$("detail").open) $("detail").showModal();
+    sendChange = send;
 
     async function send(job, change) {
       status.textContent = "Saving…";
@@ -243,11 +261,32 @@ ol.history { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 
         state.jobs = state.jobs.map(function (x) { return x.id === job.id ? body.job : x; });
         render(); openJob(body.job);
       } catch (e) {
-        status.textContent = e.message === "bad-status" ? "That step doesn't apply to this job." : "Couldn't save. Try again.";
+        status.textContent = e.message === "bad-status" ? "That step doesn't apply to this job." : e.message === "no-link" ? "This job has no link yet." : "Couldn't save. Try again.";
         sheet.querySelectorAll("button").forEach(function (b) { b.disabled = false; });
       }
     }
   }
+
+  // The job's delivery link (tools/deliver.py makes it): the address, when it ends, "Extend 30 days", and the downloads.
+  function deliveryBox(j) {
+    var d = j.delivery, over = linkOver(d), n = d.downloadCount || 0;
+    var copy = el("button", { type: "button", class: "ghost", text: "Copy link", onclick: function (e) {
+      var b = e.currentTarget; navigator.clipboard.writeText(d.url).then(function () { b.textContent = "Copied"; }, function () { b.textContent = "Select it"; }); } });
+    var extend = el("button", { type: "button", class: "go", text: "Extend 30 days", onclick: function () { sendChange(j, { extend: 30 }); } });
+    var recent = (d.downloads || []).slice(-10).reverse().map(function (x) {
+      var f = (d.files || []).filter(function (o) { return o.file === x.file; })[0];
+      return el("li", { text: when(x.at) + " · " + (f ? f.label : x.file) });
+    });
+    return el("div", { class: "link-box" }, [
+      el("h2", {}, ["Delivery link", el("small", { text: n + " download" + (n === 1 ? "" : "s") })]),
+      el("a", { class: "url", href: d.url, target: "_blank", rel: "noopener", text: d.url }),
+      el("p", { class: "ends" + (over ? " over" : "") }, [over ? "Ended " : "Works until ", el("b", { text: longDate(d.endsAt) }),
+        over ? ". Extending opens it again for 30 days from today." : "."]),
+      el("div", { class: "row" }, [extend, copy]),
+      recent.length ? el("ol", { class: "downloads" }, recent) : el("p", { class: "msg", text: "No downloads yet." }),
+    ]);
+  }
+  var sendChange = function () {};
 
   $("gate").addEventListener("submit", function (e) {
     e.preventDefault();

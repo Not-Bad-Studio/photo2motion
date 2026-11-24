@@ -3,5 +3,6 @@ User-agent: *
 Allow: /
 Disallow: /jobs
 Disallow: /for/
+Disallow: /get/
 
 Sitemap: https://photo2motion.studio/sitemap.xml
