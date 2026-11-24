@@ -341,7 +341,7 @@ a{color:#16263F}a:hover{color:#E4572E}
    company pages, which both inline it. Two short steps (package, then details), add-ons as toggle switches, and the
    total always in the footer. Its own colours and faces, so it looks the same on either page. */
 .p2mco { width: min(560px, calc(100vw - 32px)); max-height: min(780px, calc(100dvh - 32px)); margin: auto; padding: 0; border: 0;
-  border-radius: 16px; background: #FFFFFF; color: #16263F; box-shadow: 0 24px 60px rgba(22, 38, 63, .25);
+  border-radius: 11px; background: #FFFFFF; color: #16263F; box-shadow: 0 24px 60px rgba(22, 38, 63, .25);
   font: 400 16px/1.5 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
 .p2mco::backdrop { background: rgba(22, 38, 63, .55); }
 .p2mco[open] { display: flex; flex-direction: column; }
@@ -365,7 +365,7 @@ a{color:#16263F}a:hover{color:#E4572E}
 /* Progress: 1 Package, 2 Your details */
 .p2mco-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; padding: 0 24px 16px; list-style: none; border-bottom: 1px solid rgba(22, 38, 63, .1); }
 .p2mco-steps li { display: flex; align-items: center; gap: 8px; padding-top: 10px; border-top: 3px solid rgba(22, 38, 63, .12); font-size: 13px; font-weight: 600; color: #8B95A5; }
-.p2mco-steps li span { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 10px; background: rgba(22, 38, 63, .1); font-size: 11px; }
+.p2mco-steps li span { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 7px; background: rgba(22, 38, 63, .1); font-size: 11px; }
 .p2mco-steps li.is-on { border-top-color: #E4572E; color: #16263F; }
 .p2mco-steps li.is-on span { background: #E4572E; color: #FFFFFF; }
 .p2mco-steps li.is-done { border-top-color: #16263F; color: #16263F; }
@@ -377,15 +377,15 @@ a{color:#16263F}a:hover{color:#E4572E}
 .p2mco-h small { margin-left: 6px; font: 400 13px/1.3 Inter, system-ui, sans-serif; color: #4F5A6B; }
 
 /* Step 1: what's included, as a short checklist in a soft panel */
-.p2mco-box { padding: 16px 18px; border-radius: 12px; background: #F3F1EC; }
+.p2mco-box { padding: 16px 18px; border-radius: 8px; background: #F3F1EC; }
 .p2mco-box .p2mco-h { margin-bottom: 8px; }
 .p2mco-ticks { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 15px; color: #33415A; }
 .p2mco-ticks li { position: relative; padding-left: 26px; }
 .p2mco-ticks li::before { content: ""; position: absolute; left: 2px; top: .3em; width: 14px; height: 8px; border: solid #E4572E; border-width: 0 0 2px 2px; transform: rotate(-45deg) scale(.8); }
 
 /* Step 1: add-ons, folded away under "Add extras" until asked for, as toggle rows */
-.p2mco-more { border: 1px solid rgba(22, 38, 63, .12); border-radius: 12px; }
-.p2mco-more > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; cursor: pointer; list-style: none; border-radius: 12px; }
+.p2mco-more { border: 1px solid rgba(22, 38, 63, .12); border-radius: 8px; }
+.p2mco-more > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; cursor: pointer; list-style: none; border-radius: 8px; }
 .p2mco-more > summary::-webkit-details-marker { display: none; }
 .p2mco-more > summary:hover .p2mco-more-sign { background: #E9E6DF; }
 .p2mco-more > summary:focus-visible { outline: 2px solid #16263F; outline-offset: 2px; }
@@ -417,11 +417,12 @@ a{color:#16263F}a:hover{color:#E4572E}
 .p2mco-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .p2mco-field { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
 .p2mco-field > span em { margin-left: 4px; font-style: normal; font-weight: 400; color: #8B95A5; }
-.p2mco-field input, .p2mco-field textarea { width: 100%; padding: 11px 12px; border: 1px solid rgba(22, 38, 63, .22); border-radius: 8px; background: #FFFFFF; color: #16263F; font: 400 16px/1.4 Inter, system-ui, sans-serif; }
+.p2mco-field input, .p2mco-field textarea { width: 100%; padding: 11px 12px; border: 1px solid rgba(22, 38, 63, .22); border-radius: 6px; background: #FFFFFF; color: #16263F; font: 400 16px/1.4 Inter, system-ui, sans-serif; }
 .p2mco-field textarea { min-height: 64px; resize: vertical; }
 .p2mco-field input:focus, .p2mco-field textarea:focus { border-color: #16263F; outline: 2px solid rgba(22, 38, 63, .25); outline-offset: 0; }
 .p2mco-field input::placeholder, .p2mco-field textarea::placeholder { color: #8B95A5; }
 .p2mco-field.is-error input { border-color: #B23A21; outline: 2px solid #B23A21; outline-offset: 0; }
+.p2mco-field.is-error .p2mco-pick { border-color: #B23A21; color: #B23A21; }
 .p2mco-pickrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-weight: 400; }
 .p2mco-pick { position: relative; display: inline-flex; align-items: center; height: 42px; padding: 0 18px; border: 1.5px solid rgba(22, 38, 63, .3); border-radius: 21px; font-weight: 600; font-size: 15px; cursor: pointer; }
 .p2mco-pick:hover { border-color: #16263F; background: rgba(22, 38, 63, .04); }
@@ -434,8 +435,8 @@ a{color:#16263F}a:hover{color:#E4572E}
 .p2mco-check { display: grid; grid-template-columns: 20px 1fr; align-items: start; gap: 10px; font-size: 14px; line-height: 1.45; color: #33415A; cursor: pointer; }
 .p2mco-check input { width: 20px; height: 20px; margin: 0; accent-color: #E4572E; cursor: pointer; }
 .p2mco-check input:focus-visible { outline: 2px solid #16263F; outline-offset: 2px; }
-.p2mco-terms { margin: 0; padding: 12px 14px; border-radius: 10px; background: #F3F1EC; font-size: 13px; color: #4F5A6B; }
-.p2mco-fallback { display: grid; gap: 10px; padding: 14px 16px; border-radius: 10px; background: #FDF4F1; font-size: 15px; }
+.p2mco-terms { margin: 0; padding: 12px 14px; border-radius: 7px; background: #F3F1EC; font-size: 13px; color: #4F5A6B; }
+.p2mco-fallback { display: grid; gap: 10px; padding: 14px 16px; border-radius: 7px; background: #FDF4F1; font-size: 15px; }
 
 /* Footer: back, the total, and the next step */
 .p2mco-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 14px 24px 18px; border-top: 1px solid rgba(22, 38, 63, .1); background: #FFFFFF; }
@@ -543,9 +544,9 @@ h1, h2, h3 { text-wrap: balance; }
 /* "put the how 2 stages in subtle containers" (9 Nov 2026): each How it works step in a paper panel, like the
    sector cards in Why now (32px padding, 12px corners, #F3F1EC), a tighter gap so the three read as a set. */
 #how [style*="auto-fit"] { gap: 24px !important; }
-#how [style*="auto-fit"] > div { background: #F3F1EC; border-radius: 12px; padding: 32px; }
+#how [style*="auto-fit"] > div { background: #F3F1EC; border-radius: 8px; padding: 32px; }
 @media (max-width: 520px) { #how [style*="auto-fit"] { gap: 16px !important; } #how [style*="auto-fit"] > div { padding: 24px; } }
-#what-works [style*="repeat(4, 1fr)"] > div { background: #F3F1EC; border-radius: 12px; padding: 28px; }
+#what-works [style*="repeat(4, 1fr)"] > div { background: #F3F1EC; border-radius: 8px; padding: 28px; }
 @media (max-width: 1100px) { #what-works [style*="repeat(4, 1fr)"] { grid-template-columns: 1fr 1fr !important; } }
 @media (max-width: 520px) { #what-works [style*="repeat(4, 1fr)"] { grid-template-columns: 1fr !important; } }
 @media (max-width: 860px) { #what-works h2 { font-size: 38px !important; } #what-works [style*="repeat(4, 1fr)"] { gap: 16px !important; } #what-works [style*="repeat(4, 1fr)"] > div { padding: 24px; } }
@@ -622,7 +623,7 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
    it wider than its column, so it ran under them (user, 11 Nov 2026: "also fix this layout on the homepage"). */
 .p2m-reel-wrap { width: 100%; max-width: 1100px; margin-top: 32px; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: 12px; align-items: start; text-align: left; }
 .p2m-picks { display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 12px; min-height: 0; align-self: stretch; }
-.p2m-pick { position: relative; display: block; min-height: 0; padding: 0; border: 0; border-radius: 10px; overflow: hidden; cursor: pointer; background: #16263F; }
+.p2m-pick { position: relative; display: block; min-height: 0; padding: 0; border: 0; border-radius: 7px; overflow: hidden; cursor: pointer; background: #16263F; }
 .p2m-pick img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; opacity: .62; transition: opacity .2s ease; }
 .p2m-pick span { position: absolute; left: 12px; bottom: 10px; color: #F3F1EC; font: 600 12px/1.2 Inter, system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; text-shadow: 0 1px 8px rgba(0, 0, 0, .55); }
 .p2m-pick.is-on img, .p2m-pick:hover img { opacity: 1; }
@@ -670,7 +671,7 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 @media (max-width: 760px) { .p2m-film .p2m-tag { font-size: 12px !important; } }
 /* The small print under the prices: two white cards like the price cards, Good to know and Add-ons. */
 .p2m-notes { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 20px; align-items: stretch; }
-.p2m-note-card { background: #FFFFFF; border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 16px; }
+.p2m-note-card { background: #FFFFFF; border-radius: 8px; padding: 28px; display: flex; flex-direction: column; gap: 16px; }
 .p2m-note-title { font-size: 13px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #4F5A6B; }
 .p2m-note-card dl, .p2m-note-card ul { margin: 0; padding: 0; list-style: none; display: grid; }
 .p2m-note-card dl > div { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-top: 1px solid rgba(22,38,63,0.1); }
@@ -711,7 +712,7 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 #how .p2m-how-cta a[href="#pricing"] { color: #F3F1EC !important; }
 
 
-.p2m-custom { margin-top: 20px; background: #FFFFFF; border-radius: 12px; padding: 24px 28px; display: flex; flex-wrap: wrap;
+.p2m-custom { margin-top: 20px; background: #FFFFFF; border-radius: 8px; padding: 24px 28px; display: flex; flex-wrap: wrap;
   align-items: center; justify-content: space-between; gap: 16px 28px; }
 .p2m-custom p { margin: 0; max-width: 62ch; font-size: 15px; line-height: 1.6; color: #4F5A6B; }
 .p2m-custom strong { color: #16263F; font-weight: 600; }
@@ -758,9 +759,9 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
    last"): copy, then the 4 photos straight under it with a one-line credit, then the client's quote card, then "Try it
    with your photos"; one "Why don't I just use AI?" closes all the sectors. Quote cards marked data-placeholder still
    need the client's own words. */
-.p2m-quote { margin: 0; border-radius: 12px; background: #FFFFFF; display: flex; align-items: center; gap: 16px; padding: 18px 20px; }
+.p2m-quote { margin: 0; border-radius: 8px; background: #FFFFFF; display: flex; align-items: center; gap: 16px; padding: 18px 20px; }
 .p2m-quote-logo { flex: none; width: 52px; height: 52px; border-radius: 50%; object-fit: contain; display: grid; place-items: center; }
-.p2m-quote-logo.is-tall { width: 30px; height: 64px; border-radius: 3px; }  /* a tall logo kept to its own shape (Osborne Heath) */
+.p2m-quote-logo.is-tall { width: 30px; height: 64px; border-radius: 2px; }  /* a tall logo kept to its own shape (Osborne Heath) */
 .p2m-quote-logo.stand-in { background: #16263F; color: #F3F1EC; font: 600 15px/1 'Space Grotesk', sans-serif; letter-spacing: 0.06em; }
 /* Quote words smaller (user, 13 Nov 2026: "reduce the sixe of the quote font by 5 pts", then "Try 14px desktop" once 11px
    read smaller than the name line under it): 18 -> 16 on phones, 16 -> 14 on desktop. */
@@ -823,7 +824,7 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
   /* Each still's sector title sits under it as plain text, orange on the film playing. */
   .p2m-pick { aspect-ratio: auto !important; display: flex; flex-direction: column; align-items: center; gap: 6px;
     background: none; border-radius: 0; overflow: visible; }
-  .p2m-pick img { position: static; height: auto; aspect-ratio: 16 / 9; border-radius: 8px; opacity: 1; }
+  .p2m-pick img { position: static; height: auto; aspect-ratio: 16 / 9; border-radius: 6px; opacity: 1; }
   .p2m-pick span { position: static !important; height: auto !important; padding: 0 !important; background: none !important;
     color: #16263F !important; font-size: 12px !important; line-height: 1.25 !important; text-align: center; justify-content: center; }
   .p2m-pick.is-on span { color: #E4572E !important; }
@@ -831,7 +832,7 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
   /* No orange play button over the films. The button stays (screen readers and keyboards still use it), unseen and
      stretched over the whole film, so a tap anywhere on it plays or pauses. */
   .p2m-film > button { position: absolute !important; inset: 0; z-index: 2; width: 100% !important; height: 100% !important;
-    border-radius: 12px !important; background: transparent !important; opacity: 0 !important; transform: none !important; }
+    border-radius: 8px !important; background: transparent !important; opacity: 0 !important; transform: none !important; }
   .p2m-film > button:focus-visible { opacity: 1 !important; }
   /* The free-clip line folds into "More info" under the price line. */
   .p2m-free-line { display: none !important; }
@@ -858,11 +859,11 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 <div class="nav-l" style="display: flex; align-items: center; gap: 20px">
 <details class="dd" style="position: relative">
 <summary style="display: flex; align-items: center; gap: 6px; padding: 12px 8px; font-size: 15px; font-weight: 500; cursor: pointer; list-style: none">Sectors<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4 L6 8 L10 4" fill="none" stroke="#16263F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></summary>
-<div class="dd-panel" style="position: absolute; top: 100%; left: 0; z-index: 10; min-width: 200px; margin-top: 6px; padding: 6px; border-radius: 12px; background: #FFFFFF; box-shadow: 0 10px 30px rgba(22,38,63,0.14)"><a href="/#why-now" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">Why now</a><a href="/#stays" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">Hospitality</a><a href="/#property" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">Property</a><a href="/#charters" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">Marine</a></div>
+<div class="dd-panel" style="position: absolute; top: 100%; left: 0; z-index: 10; min-width: 200px; margin-top: 6px; padding: 6px; border-radius: 8px; background: #FFFFFF; box-shadow: 0 10px 30px rgba(22,38,63,0.14)"><a href="/#why-now" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">Why now</a><a href="/#stays" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">Hospitality</a><a href="/#property" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">Property</a><a href="/#charters" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">Marine</a></div>
 </details>
 <details class="dd" style="position: relative">
 <summary style="display: flex; align-items: center; gap: 6px; padding: 12px 8px; font-size: 15px; font-weight: 500; cursor: pointer; list-style: none">How it works<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4 L6 8 L10 4" fill="none" stroke="#16263F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></summary>
-<div class="dd-panel" style="position: absolute; top: 100%; left: 0; z-index: 10; min-width: 200px; margin-top: 6px; padding: 6px; border-radius: 12px; background: #FFFFFF; box-shadow: 0 10px 30px rgba(22,38,63,0.14)"><a href="/#how" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">Three steps</a><a href="/#when" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">When it’s right</a><a href="/#why" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">Why motion</a><a href="/#questions" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">Questions</a><a href="/#what-works" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">What works best</a></div>
+<div class="dd-panel" style="position: absolute; top: 100%; left: 0; z-index: 10; min-width: 200px; margin-top: 6px; padding: 6px; border-radius: 8px; background: #FFFFFF; box-shadow: 0 10px 30px rgba(22,38,63,0.14)"><a href="/#how" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">Three steps</a><a href="/#when" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">When it’s right</a><a href="/#why" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">Why motion</a><a href="/#questions" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">Questions</a><a href="/#what-works" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">What works best</a></div>
 </details>
 </div>
 <a href="/#top" class="nav-logo" aria-label="Photo2Motion home" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #16263F">
@@ -871,7 +872,7 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 <div class="nav-r" style="display: flex; align-items: center; justify-content: flex-end; gap: 20px">
 <details class="dd" style="position: relative">
 <summary style="display: flex; align-items: center; gap: 6px; padding: 12px 8px; font-size: 15px; font-weight: 500; cursor: pointer; list-style: none">Pricing<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4 L6 8 L10 4" fill="none" stroke="#16263F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></summary>
-<div class="dd-panel" style="position: absolute; top: 100%; left: 0; z-index: 10; min-width: 200px; margin-top: 6px; padding: 6px; border-radius: 12px; background: #FFFFFF; box-shadow: 0 10px 30px rgba(22,38,63,0.14)"><a href="/#pricing" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">Packs</a><a href="/#monthly" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">Monthly</a><a href="/#addons" style="display: block; padding: 10px 14px; border-radius: 8px; text-decoration: none; color: #16263F; font-size: 15px">Add-ons</a></div>
+<div class="dd-panel" style="position: absolute; top: 100%; left: 0; z-index: 10; min-width: 200px; margin-top: 6px; padding: 6px; border-radius: 8px; background: #FFFFFF; box-shadow: 0 10px 30px rgba(22,38,63,0.14)"><a href="/#pricing" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">Packs</a><a href="/#monthly" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">Monthly</a><a href="/#addons" style="display: block; padding: 10px 14px; border-radius: 6px; text-decoration: none; color: #16263F; font-size: 15px">Add-ons</a></div>
 </details>
 <a href="/#developed" style="padding: 12px 8px; font-size: 15px; font-weight: 500; text-decoration: none">About</a>
 <a href="/#free-clip" style="display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 22px; background: #E4572E; color: #FFFFFF; font-size: 15px; font-weight: 600; text-decoration: none">Get a free clip</a>
