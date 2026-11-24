@@ -491,6 +491,7 @@ a{color:#16263F}a:hover{color:#E4572E}
 .p2mco-field input:focus, .p2mco-field textarea:focus { border-color: #16263F; outline: 2px solid rgba(22, 38, 63, .25); outline-offset: 0; }
 .p2mco-field input::placeholder, .p2mco-field textarea::placeholder { color: #8B95A5; }
 .p2mco-field.is-error input { border-color: #B23A21; outline: 2px solid #B23A21; outline-offset: 0; }
+.p2mco-field.is-error .p2mco-pick { border-color: #B23A21; color: #B23A21; }
 .p2mco-pickrow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-weight: 400; }
 .p2mco-pick { position: relative; display: inline-flex; align-items: center; height: 42px; padding: 0 18px; border: 1.5px solid rgba(22, 38, 63, .3); border-radius: 21px; font-weight: 600; font-size: 15px; cursor: pointer; }
 .p2mco-pick:hover { border-color: #16263F; background: rgba(22, 38, 63, .04); }
@@ -1542,8 +1543,10 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
 // going straight to Stripe. Two short steps (user, 10 Nov 2026: "the form still looks untidy and hard to follow, also
 // add ons can be a toggle"):
 //   1. Package: what's included, and add-ons as toggle switches. "Next: your details".
-//   2. Your details: email (the only required field), optional name, business, website, photos, who took them and what
-//      the films are of, an unticked "happy for us to share your films" box, the terms, then "Continue to payment".
+//   2. Your details: email and photos (both required; user, 24 Nov 2026: "make photos not optional"), optional name,
+//      business, website, who took the photos and what the films are of, an unticked "happy for us to share your
+//      films" box, the terms, then "Continue to payment". A film we've already made (an edit offer whose "about" says
+//      "we made") needs no photos, so its panel has no photo field.
 // The footer always shows the total and a one-line breakdown. The order and any photos go to /api/checkout
 // (functions/checkout.src.mjs), which starts one Stripe checkout for the package plus add-ons. Without JavaScript the
 // link still opens the plan's own Stripe payment link.
@@ -1614,10 +1617,10 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
       '<div class="p2mco-pair"><label class="p2mco-field"><span>Your name <em>optional</em></span><input id="p2mco-name" name="name" autocomplete="name"></label>',
       '<label class="p2mco-field"><span>Business <em>optional</em></span><input id="p2mco-business" name="business" autocomplete="organization"></label></div>',
       '<label class="p2mco-field"><span>Website <em>optional</em></span><input id="p2mco-website" name="website" placeholder="yourbusiness.co.uk"></label>',
-      '<div class="p2mco-field"><span>Photos <em>optional</em></span><div class="p2mco-pickrow">',
+      '<div class="p2mco-field" id="p2mco-photo-field"><span>Photos</span><div class="p2mco-pickrow">',
       '<label class="p2mco-pick">Add photos<input id="p2mco-photos" name="photos" type="file" accept="image/*" multiple></label>',
       '<span class="p2mco-picked" id="p2mco-picked"></span><button type="button" class="p2mco-clear" id="p2mco-clear" hidden>Remove</button></div>',
-      '<small class="p2mco-hint">Up to 12. Or send them after paying. Originals work best.</small></div>',
+      '<small class="p2mco-hint">4 to 6 a film. Add up to 12 here and email us any more after paying. Originals work best.</small></div>',
       // The photographer, credited on the films and wherever we share them (user, 24 Nov 2026: "is there an option to
       // credit photographer in the form"). Saved on the job as "photographer".
       '<label class="p2mco-field"><span>Who took the photos? <em>optional, we’ll credit them</em></span><input id="p2mco-photographer" name="photographer" maxlength="200" placeholder="For example: Sam Lee Photography"></label>',
@@ -1657,6 +1660,7 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
   // "3 photos added" beside the Add photos button (the browser's own file box is hidden inside it).
   function picked() {
     var n = ($("p2mco-photos").files || []).length;
+    if (n) { mark($("p2mco-photos"), false); if ($("p2mco-status").classList.contains("is-error")) status(""); }
     $("p2mco-picked").textContent = !n ? "" : n > MAX_PHOTOS ? "The first " + MAX_PHOTOS + " of " + n + " will be added"
       : n + (n === 1 ? " photo" : " photos") + " added";
     $("p2mco-clear").hidden = !n;
@@ -1693,7 +1697,11 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
     else if (preset) { ticked = {}; preset.forEach(function (id) { ticked[id] = true; }); preTicked = true; }
     else if (preTicked) { ticked = {}; preTicked = false; }
     if (!dialog) build();
-    state = { plan: plan, busy: false, step: 1, offer: offer, offerId: offer ? offerId : "" };
+    // A film we've already made ("The film we made, ..."; not "Your own film") needs no photos.
+    var made = Boolean(offer && /\bwe made\b/i.test(offer.about || ""));
+    state = { plan: plan, busy: false, step: 1, offer: offer, offerId: offer ? offerId : "", needsPhotos: !made };
+    $("p2mco-photo-field").hidden = made;
+    if (made) $("p2mco-photos").value = "";
     var monthly = Boolean(plan.unit);
     $("p2mco-eyebrow").textContent = offer ? "Offer" : opts.suggested === plan.name ? (opts.suggestedLabel || "Suggested for you") : "Your package";
     $("p2mco-title").textContent = offer ? offer.name : cap(plan.name);
@@ -1806,6 +1814,12 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
       return;
     }
     var files = Array.prototype.slice.call($("p2mco-photos").files || [], 0, MAX_PHOTOS);
+    if (state.needsPhotos && !files.length) {
+      mark($("p2mco-photos"), true);
+      status("Add your photos so we can start.", true);
+      $("p2mco-photos").focus();
+      return;
+    }
     state.busy = true; $("p2mco-go").disabled = true;
     var order = uuid(), sent = 0;
     try {
