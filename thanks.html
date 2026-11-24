@@ -430,6 +430,10 @@ a{color:#16263F}a:hover{color:#E4572E}
 .p2mco-picked { font-size: 14px; color: #33415A; }
 .p2mco-clear { padding: 0; border: 0; background: none; color: #16263F; font: 500 14px Inter, system-ui, sans-serif; text-decoration: underline; cursor: pointer; }
 .p2mco-hint { font-size: 13px; font-weight: 400; color: #4F5A6B; }
+/* The unticked "happy for us to share your films" box, just above the terms */
+.p2mco-check { display: grid; grid-template-columns: 20px 1fr; align-items: start; gap: 10px; font-size: 14px; line-height: 1.45; color: #33415A; cursor: pointer; }
+.p2mco-check input { width: 20px; height: 20px; margin: 0; accent-color: #E4572E; cursor: pointer; }
+.p2mco-check input:focus-visible { outline: 2px solid #16263F; outline-offset: 2px; }
 .p2mco-terms { margin: 0; padding: 12px 14px; border-radius: 10px; background: #F3F1EC; font-size: 13px; color: #4F5A6B; }
 .p2mco-fallback { display: grid; gap: 10px; padding: 14px 16px; border-radius: 10px; background: #FDF4F1; font-size: 15px; }
 
@@ -490,6 +494,10 @@ section[id], #top { scroll-margin-top: 88px; }
   /* The design stacks the nav into three rows on phones; pinned, that covers a quarter of the screen. */
   header[style*="position: sticky"] { position: static !important; }
   section[id], #top { scroll-margin-top: 16px; }
+  /* The design stacks two-column sections with 1fr, which never shrinks below its content, so the free-clip form ran
+     to the screen's right edge with no margin (user, 24 Nov 2026: "the get a free clip form is cropped on mobile").
+     minmax(0, 1fr) keeps every stacked section inside its 32px side margins. */
+  .two { grid-template-columns: minmax(0, 1fr) !important; }
   [style*="repeat(4, 1fr)"]:not(.p2m-photos), [style*="repeat(3, 1fr)"]:not(.p2m-photos) { grid-template-columns: 1fr 1fr !important; }
   #why-now h2, #when h2, #how h2, #why h2, #pricing h2, #questions h2, #free-clip h2, #developed h2 { font-size: 38px !important; }
   section[style*="padding: 112px 0"], section[style*="padding-top: 112px"] { padding-top: 72px !important; padding-bottom: 72px !important; }

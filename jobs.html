@@ -77,6 +77,14 @@ ol.history { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 
 .link-box .ends b { color: var(--ink); }
 .link-box .ends.over b { color: var(--accent); }
 ol.downloads { margin: 0; padding-left: 18px; display: grid; gap: 2px; font-size: 13px; color: var(--muted); }
+.share { font-weight: 600; }
+.share.ok { color: var(--ok); }
+.share-box .state { margin: 0; font-size: 14px; color: var(--muted); }
+.share-box .state b { color: var(--ink); }
+.share-box .state b.ok { color: var(--ok); }
+.share-box label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.share-box .credit { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.share-box .credit input { flex: 1 1 220px; min-width: 0; height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 400 15px var(--text); }
 [hidden] { display: none !important; }
 </style>
 </head>
@@ -159,6 +167,14 @@ ol.downloads { margin: 0; padding-left: 18px; display: grid; gap: 2px; font-size
       " · " + n + " download" + (n === 1 ? "" : "s");
   }
   function pillClass(s) { return s === "paid" || s === "new" ? "pill need" : s === "delivered" ? "pill done" : "pill"; }
+  // Whether we may show the job's films as our work: share is true from the checkout box or the free-clip line (or
+  // switched on here), false if they didn't tick it or said no, missing on jobs from before the box.
+  function shareLabel(j) { return j.share === true ? "OK to share" : "Not cleared to share"; }
+  // The card's sharing line: the permission, and the photographer when we have one.
+  function shareLine(j) {
+    return el("span", { class: "sub" }, [el("span", { class: j.share === true ? "share ok" : "share", text: shareLabel(j) }),
+      j.photographer ? " · Photos by " + j.photographer : ""]);
+  }
 
   async function api(path, opts) {
     var res = await fetch(path, Object.assign({ headers: { Authorization: "Bearer " + state.key, "Content-Type": "application/json" }, cache: "no-store" }, opts || {}));
@@ -203,6 +219,7 @@ ol.downloads { margin: 0; padding-left: 18px; display: grid; gap: 2px; font-size
           el("span", { class: "sub", text: what(j) }),
           el("span", { class: "sub", text: KIND[j.kind] + " · " + (j.photos || []).length + " photo" + ((j.photos || []).length === 1 ? "" : "s") + " · " + when(j.updatedAt) + (j.test ? " · test" : "") }),
           j.delivery ? el("span", { class: "sub", text: linkLine(j.delivery) }) : null,
+          shareLine(j),
         ]));
       });
       box.appendChild(el("section", { class: "group" }, [el("h2", {}, [g[0], el("small", { text: String(list.length) })]), cards]));
@@ -243,6 +260,7 @@ ol.downloads { margin: 0; padding-left: 18px; display: grid; gap: 2px; font-size
     ]));
     sheet.appendChild(el("div", {}, [el("h2", { text: "Move it on" }), steps]));
     if (j.delivery && j.delivery.url) sheet.appendChild(deliveryBox(j));
+    sheet.appendChild(shareBox(j));
     sheet.appendChild(facts);
     sheet.appendChild(el("div", {}, [el("h2", {}, ["Photos", el("small", { text: (j.photos || []).length ? String(j.photos.length) : "none yet: they may send them after paying" })]), photos]));
     sheet.appendChild(el("div", { style: "display: flex; flex-direction: column; gap: 8px" }, [el("h2", { text: "Add a note" }), note,
@@ -261,7 +279,8 @@ ol.downloads { margin: 0; padding-left: 18px; display: grid; gap: 2px; font-size
         state.jobs = state.jobs.map(function (x) { return x.id === job.id ? body.job : x; });
         render(); openJob(body.job);
       } catch (e) {
-        status.textContent = e.message === "bad-status" ? "That step doesn't apply to this job." : e.message === "no-link" ? "This job has no link yet." : "Couldn't save. Try again.";
+        status.textContent = e.message === "bad-status" ? "That step doesn't apply to this job." : e.message === "no-link" ? "This job has no link yet."
+          : e.message === "bad-share" || e.message === "bad-photographer" ? "The board sent something the API didn't expect. Refresh and try again." : "Couldn't save. Try again.";
         sheet.querySelectorAll("button").forEach(function (b) { b.disabled = false; });
       }
     }
@@ -287,6 +306,26 @@ ol.downloads { margin: 0; padding-left: 18px; display: grid; gap: 2px; font-size
     ]);
   }
   var sendChange = function () {};
+
+  // Sharing and credit: may we show this job's films as our work, and who took the photos. Each change is saved at once
+  // and logged in the job's history ("OK to share", "Photographer: Sam Lee").
+  function shareBox(j) {
+    var why = j.share === true ? (j.kind === "free-clip" ? " The free-clip form says we may share it, credited, unless they tell us not to." : "")
+      : j.share === false ? " Ask them before showing their films." : " Not asked yet: ask before showing their films.";
+    var toggle = el("button", { type: "button", class: "ghost", text: j.share === true ? "Mark not cleared" : "Mark OK to share",
+      onclick: function () { sendChange(j, { share: j.share !== true }); } });
+    var input = el("input", { type: "text", id: "photographer", maxlength: "200", autocomplete: "off", placeholder: "Who took the photos" });
+    input.value = j.photographer || "";
+    var save = el("button", { type: "button", class: "ghost", text: "Save credit", onclick: function () {
+      if (input.value.trim() !== (j.photographer || "")) sendChange(j, { photographer: input.value }); } });
+    return el("div", { class: "link-box share-box" }, [
+      el("h2", { text: "Sharing and credit" }),
+      el("p", { class: "state" }, [el("b", { class: j.share === true ? "ok" : "", text: shareLabel(j) + "." }), why]),
+      el("div", { class: "row" }, [toggle]),
+      el("label", { for: "photographer" }, ["Photographer, credited on the films and wherever we share them",
+        el("span", { class: "credit" }, [input, save])]),
+    ]);
+  }
 
   $("gate").addEventListener("submit", function (e) {
     e.preventDefault();

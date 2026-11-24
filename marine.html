@@ -499,6 +499,10 @@ a{color:#16263F}a:hover{color:#E4572E}
 .p2mco-picked { font-size: 14px; color: #33415A; }
 .p2mco-clear { padding: 0; border: 0; background: none; color: #16263F; font: 500 14px Inter, system-ui, sans-serif; text-decoration: underline; cursor: pointer; }
 .p2mco-hint { font-size: 13px; font-weight: 400; color: #4F5A6B; }
+/* The unticked "happy for us to share your films" box, just above the terms */
+.p2mco-check { display: grid; grid-template-columns: 20px 1fr; align-items: start; gap: 10px; font-size: 14px; line-height: 1.45; color: #33415A; cursor: pointer; }
+.p2mco-check input { width: 20px; height: 20px; margin: 0; accent-color: #E4572E; cursor: pointer; }
+.p2mco-check input:focus-visible { outline: 2px solid #16263F; outline-offset: 2px; }
 .p2mco-terms { margin: 0; padding: 12px 14px; border-radius: 10px; background: #F3F1EC; font-size: 13px; color: #4F5A6B; }
 .p2mco-fallback { display: grid; gap: 10px; padding: 14px 16px; border-radius: 10px; background: #FDF4F1; font-size: 15px; }
 
@@ -559,6 +563,10 @@ section[id], #top { scroll-margin-top: 88px; }
   /* The design stacks the nav into three rows on phones; pinned, that covers a quarter of the screen. */
   header[style*="position: sticky"] { position: static !important; }
   section[id], #top { scroll-margin-top: 16px; }
+  /* The design stacks two-column sections with 1fr, which never shrinks below its content, so the free-clip form ran
+     to the screen's right edge with no margin (user, 24 Nov 2026: "the get a free clip form is cropped on mobile").
+     minmax(0, 1fr) keeps every stacked section inside its 32px side margins. */
+  .two { grid-template-columns: minmax(0, 1fr) !important; }
   [style*="repeat(4, 1fr)"]:not(.p2m-photos), [style*="repeat(3, 1fr)"]:not(.p2m-photos) { grid-template-columns: 1fr 1fr !important; }
   #why-now h2, #when h2, #how h2, #why h2, #pricing h2, #questions h2, #free-clip h2, #developed h2 { font-size: 38px !important; }
   section[style*="padding: 112px 0"], section[style*="padding-top: 112px"] { padding-top: 72px !important; padding-bottom: 72px !important; }
@@ -1136,7 +1144,7 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 52px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.05">See your own photos in motion.</h2>
 <p style="margin: 0; font-size: 18px; line-height: 1.55; color: #DCE2EA">Add three photos, or just your website. We’ll send back a 10-second film within 24 hours, Monday to Friday,<br class="bd"> with our end card, and a price for the rest if you want it. One free clip per business.</p>
 </div>
-<div class="p2m-form-wrap"><form id="p2m-form" novalidate style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 18px"><input type="hidden" name="source" value="photo2motion-marine"><p hidden><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+<div class="p2m-form-wrap"><form id="p2m-form" novalidate style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 18px"><input type="hidden" name="source" value="photo2motion-marine"><input type="hidden" name="share" value="yes"><p hidden><label>Leave this empty: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
 <div style="display: flex; flex-direction: column; gap: 6px">
 <label for="fc-name" style="font-size: 14px; font-weight: 500; color: #F3F1EC">Your name</label>
 <input id="fc-name" name="name" autocomplete="name" maxlength="256" required type="text" style="height: 48px; border-radius: 8px; border: 1px solid rgba(243,241,236,0.3); background: rgba(243,241,236,0.06); color: #F3F1EC; padding: 0 14px; font: inherit">
@@ -1163,7 +1171,7 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 <label for="fc-photos" style="font-size: 14px; font-weight: 500; color: #F3F1EC">Your photos (up to 4, optional)</label>
 <input id="fc-photos" type="file" accept="image/*" multiple aria-describedby="fc-photo-status" style="height: 48px; padding: 10px 0; color: #AEB8C7; font: inherit">
 </div>
-<p id="fc-photo-status" class="p2m-note" aria-live="polite" style="grid-column: 1 / -1; margin: -8px 0 0; font-size: 14px; color: rgba(243,241,236,0.75)">Three photos of one boat, property or room, with no one in shot. No photos to hand? We’ll pick from your website.</p><button type="submit" data-wait="Sending…" style="grid-column: 1 / -1; height: 56px; border: 0; border-radius: 28px; background: #E4572E; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 17px; cursor: pointer">Send my photos</button>
+<p id="fc-photo-status" class="p2m-note" aria-live="polite" style="grid-column: 1 / -1; margin: -8px 0 0; font-size: 14px; color: rgba(243,241,236,0.75)">Three photos of one boat, property or room, with no one in shot. No photos to hand? We’ll pick from your website.</p><div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px"><label for="fc-photographer" style="font-size: 14px; font-weight: 500; color: #F3F1EC">Who took the photos? (optional, we’ll credit them)</label><input id="fc-photographer" name="photographer" autocomplete="off" maxlength="200" placeholder="For example: Sam Lee Photography" type="text" style="height: 48px; border-radius: 8px; border: 1px solid rgba(243,241,236,0.3); background: rgba(243,241,236,0.06); color: #F3F1EC; padding: 0 14px; font: inherit"></div><p style="grid-column: 1 / -1; margin: 0; font-size: 14px; color: rgba(243,241,236,0.75)">We may share free clips on our site and socials, credited to you. Tell us if you’d rather we didn’t.</p><button type="submit" data-wait="Sending…" style="grid-column: 1 / -1; height: 56px; border: 0; border-radius: 28px; background: #E4572E; color: #FFFFFF; font: inherit; font-weight: 600; font-size: 17px; cursor: pointer">Send my photos</button>
 <p style="grid-column: 1 / -1; margin: 0; font-size: 13px; color: rgba(243,241,236,0.65)">We’ll only use your details to make your clip and follow up about it. See our <a href="/privacy-policy" style="color: inherit">privacy policy</a>.</p></form><div id="fc-done" class="p2m-msg" role="status" hidden style="padding: 28px; border-radius: 12px; background: rgba(243,241,236,0.08); color: #F3F1EC; font-size: 18px; line-height: 1.55"><strong>Thank you, your photos are with us.</strong><br>We’ll send your clip within 24 hours, Monday to Friday. Keep an eye on your inbox.</div><div id="fc-fail" class="p2m-msg" role="alert" hidden style="margin-top: 16px; padding: 16px 20px; border-radius: 10px; background: rgba(228,87,46,0.18); color: #F3F1EC; font-size: 15px"></div></div>
 </div>
 </section>
@@ -1425,8 +1433,8 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
 // going straight to Stripe. Two short steps (user, 10 Nov 2026: "the form still looks untidy and hard to follow, also
 // add ons can be a toggle"):
 //   1. Package: what's included, and add-ons as toggle switches. "Next: your details".
-//   2. Your details: email (the only required field), optional name, business, website, photos and what the films
-//      are of, the terms, then "Continue to secure payment".
+//   2. Your details: email (the only required field), optional name, business, website, photos, who took them and what
+//      the films are of, an unticked "happy for us to share your films" box, the terms, then "Continue to payment".
 // The footer always shows the total and a one-line breakdown. The order and any photos go to /api/checkout
 // (functions/checkout.src.mjs), which starts one Stripe checkout for the package plus add-ons. Without JavaScript the
 // link still opens the plan's own Stripe payment link.
@@ -1501,8 +1509,14 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
       '<label class="p2mco-pick">Add photos<input id="p2mco-photos" name="photos" type="file" accept="image/*" multiple></label>',
       '<span class="p2mco-picked" id="p2mco-picked"></span><button type="button" class="p2mco-clear" id="p2mco-clear" hidden>Remove</button></div>',
       '<small class="p2mco-hint">Up to 12. Or send them after paying. Originals work best.</small></div>',
+      // The photographer, credited on the films and wherever we share them (user, 24 Nov 2026: "is there an option to
+      // credit photographer in the form"). Saved on the job as "photographer".
+      '<label class="p2mco-field"><span>Who took the photos? <em>optional, we’ll credit them</em></span><input id="p2mco-photographer" name="photographer" maxlength="200" placeholder="For example: Sam Lee Photography"></label>',
       '<label class="p2mco-field"><span>What are the films of? <em>optional</em></span><textarea id="p2mco-notes" name="notes" rows="2" placeholder="For example: our three yachts, or rooms 1 to 5"></textarea></label>',
       '<input type="text" name="bot-field" tabindex="-1" autocomplete="off" aria-hidden="true" style="position: absolute; left: -9999px">',
+      // Permission to show their films as our work, off unless they tick it (user, 24 Nov 2026: "Tickbox + free-clip
+      // line"). Saved on the job as "share": true when ticked, false when not.
+      '<label class="p2mco-check"><input id="p2mco-share" name="share" type="checkbox"><span>Happy for us to share your films as examples of our work. We’ll credit your business and link to you.</span></label>',
       '<p class="p2mco-terms" id="p2mco-terms"></p><div class="p2mco-fallback" id="p2mco-fallback" hidden></div></div>',
       '</form>',
       '<div class="p2mco-foot">',
@@ -1700,7 +1714,8 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
       var res = await fetch(opts.api, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         order: order, plan: state.plan.name, addons: chosen(), offer: state.offerId || "", photos: sent, source: opts.source || "",
         name: $("p2mco-name").value, email: email.value, business: $("p2mco-business").value, website: $("p2mco-website").value,
-        notes: $("p2mco-notes").value, back: location.href.split("#")[0] + "#pricing", "bot-field": form.elements["bot-field"].value,
+        notes: $("p2mco-notes").value, photographer: $("p2mco-photographer").value, share: $("p2mco-share").checked,
+        back: location.href.split("#")[0] + "#pricing", "bot-field": form.elements["bot-field"].value,
       }) });
       var data = await res.json().catch(function () { return {}; });
       if (data.ok && data.url) { location.href = data.url; return; }
