@@ -2,8 +2,8 @@
 <!-- photo2motion.studio's sitemap. Written by motion-demos/tools/p2m_seo.py at each
      home page or sector page build; lastmod is the build date. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://photo2motion.studio/</loc><lastmod>2026-11-24</lastmod></url>
-  <url><loc>https://photo2motion.studio/hospitality</loc><lastmod>2026-11-24</lastmod></url>
-  <url><loc>https://photo2motion.studio/property</loc><lastmod>2026-11-24</lastmod></url>
-  <url><loc>https://photo2motion.studio/marine</loc><lastmod>2026-11-24</lastmod></url>
+  <url><loc>https://photo2motion.studio/</loc><lastmod>2026-11-25</lastmod></url>
+  <url><loc>https://photo2motion.studio/hospitality</loc><lastmod>2026-11-25</lastmod></url>
+  <url><loc>https://photo2motion.studio/property</loc><lastmod>2026-11-25</lastmod></url>
+  <url><loc>https://photo2motion.studio/marine</loc><lastmod>2026-11-25</lastmod></url>
 </urlset>
