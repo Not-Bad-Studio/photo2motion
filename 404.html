@@ -850,6 +850,132 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 }
 @media (prefers-reduced-motion: reduce) { .p2m-more summary::after { transition: none; } }
 
+
+/* The social section (p2m_social.py, user, 25 Nov 2026): a phone playing one of our Instagram films, the headline
+   and copy beside it; on phones the copy stacks under the phone. Desktop: the copy on the left, centred against the
+   phone on the right, which stands on the white band with no panel behind it (user, same day: "switch the layout so
+   the phone is on the right, remove the cream contaner around the phone"). Panels share one grid cell, so swapping
+   sectors never moves the layout. The words (at most 520px) and the phone sit together as one centred pair rather
+   than at the two edges of the page (user, same day: "tighten the layout of the section, the text looks a bit close to
+   the left"): at 1280px the words start about 170px in, 100px more than the page's other sections. */
+.p2m-social { max-width: 1200px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: grid;
+  grid-template-columns: minmax(0, 520px) 300px; justify-content: center; column-gap: 96px; row-gap: 0;
+  grid-template-rows: 1fr auto auto auto auto auto auto 1fr; align-items: start; }
+.p2m-social > * { grid-column: 1; margin: 0; }
+.p2m-social > .p2m-social-stage { grid-column: 2; grid-row: 1 / -1; }
+.p2m-social > .p2m-social-label { grid-row: 2; }
+.p2m-social > .p2m-social-tabs { grid-row: 3; margin-top: 18px; }
+.p2m-social > .p2m-social-panels { grid-row: 4; margin-top: 18px; }
+.p2m-social > .p2m-social-more { grid-row: 5; margin-top: 16px; }
+.p2m-social > .p2m-social-actions { grid-row: 6; margin-top: 28px; }
+.p2m-social > .p2m-social-note { grid-row: 7; margin-top: 18px; }
+.p2m-social-label { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #E4572E; font-weight: 600; }
+.p2m-social-panels { display: grid; }
+/* The old words fade out first, then the new ones fade in, so the two never show over each other. */
+.p2m-social-panel { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 18px; opacity: 0; visibility: hidden;
+  transition: opacity .25s ease, visibility 0s linear .25s; }
+.p2m-social-panel.is-on { opacity: 1; visibility: visible; transition: opacity .4s ease .25s; }
+.p2m-social-panel h2 { margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 48px; font-weight: 600;
+  letter-spacing: -0.03em; line-height: 1.05; text-wrap: balance; }
+.p2m-social-panel p, .p2m-social-more { font-size: 18px; line-height: 1.6; color: #4F5A6B; text-wrap: pretty; }
+.p2m-social-panel p { margin: 0; }
+.p2m-social-more { color: #16263F; font-weight: 500; }
+.p2m-social-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.p2m-social-actions a { display: inline-flex; align-items: center; height: 52px; padding: 0 26px; border-radius: 26px;
+  font-weight: 600; text-decoration: none; box-sizing: border-box; }
+.p2m-social-actions a.p2m-social-ig { padding: 0 22px; border: 1.5px solid #16263F; color: #16263F; }
+.p2m-social-actions a.p2m-social-ig:hover { background: #16263F; color: #F3F1EC; }
+.p2m-social-note { font-size: 14px; line-height: 1.5; color: #4F5A6B; }
+/* Sector tabs (home page only): the one showing is navy, and an orange line under it fills as its film plays. */
+.p2m-social-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.p2m-social-tabs button { height: 38px; padding: 0 16px; border: 1.5px solid #D9D5CC; border-radius: 19px; background: #FFFFFF
+  linear-gradient(#E4572E, #E4572E) no-repeat left bottom / calc(var(--p, 0) * 100%) 3px; color: #16263F;
+  font: 600 14px/1 Inter, system-ui, sans-serif; cursor: pointer; transition: border-color .2s ease, background-color .2s ease; }
+.p2m-social-tabs button:hover { border-color: #16263F; }
+.p2m-social-tabs button[aria-selected="true"] { background-color: #16263F; border-color: #16263F; color: #F3F1EC; }
+.p2m-social-tabs button:focus-visible { outline: 2px solid #E4572E; outline-offset: 3px; }
+/* The phone. */
+/* Room under the phone and its shadow (user, 25 Nov 2026: "add a bit of space under the phone"): before How it works on
+   desktop, before the tabs and words when they stack under it. */
+.p2m-social-stage { display: grid; place-items: center; padding-bottom: 28px; }
+.p2m-phone { position: relative; width: 300px; max-width: 100%; aspect-ratio: 300 / 616; padding: 10px; box-sizing: border-box;
+  border-radius: 46px; background: #16263F; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08),
+  0 34px 60px -24px rgba(22, 38, 63, .5), 0 14px 28px -14px rgba(22, 38, 63, .35); }
+.p2m-phone-screen { position: relative; width: 100%; height: 100%; overflow: hidden; isolation: isolate; border-radius: 37px;
+  background: #FFFFFF; }
+.p2m-phone-bar { position: absolute; z-index: 3; top: 10px; left: 10px; right: 10px; height: 40px; display: flex;
+  align-items: center; justify-content: space-between; padding: 0 22px 0 30px; color: #16263F; pointer-events: none;
+  font: 600 12px/1 Inter, system-ui, sans-serif; transition: color .45s ease; }
+.p2m-phone-island { position: absolute; top: 10px; left: 50%; width: 86px; height: 24px; margin-left: -43px;
+  border-radius: 8px; background: #0B1322; }
+.p2m-phone-home { position: absolute; z-index: 3; bottom: 17px; left: 50%; width: 96px; height: 4px; margin-left: -48px;
+  border-radius: 2px; background: #16263F; opacity: .85; pointer-events: none; transition: background-color .45s ease; }
+.p2m-phone.on-reel .p2m-phone-bar { color: #FFFFFF; }
+.p2m-phone.on-reel .p2m-phone-home { background: #FFFFFF; }
+.p2m-screen { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden;
+  transition: opacity .45s ease, visibility 0s linear .45s; }
+.p2m-screen.is-on { opacity: 1; visibility: visible; transition: opacity .45s ease; }
+.p2m-screen video { display: block; width: 100%; background: #E3E0D9; }
+.p2m-screen.is-post { padding-top: 44px; background: #FFFFFF; }
+.p2m-screen.is-post video { aspect-ratio: 4 / 5; object-fit: cover; }
+.p2m-post-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px; color: #16263F;
+  font: 600 12px/1.2 Inter, system-ui, sans-serif; }
+.p2m-avatar { width: 26px; height: 26px; border-radius: 50%; flex: none; }
+.p2m-post-icons { display: flex; gap: 14px; padding: 10px 12px 6px; }
+.p2m-post-icons svg { width: 21px; height: 21px; fill: none; stroke: #16263F; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.p2m-post-caption { margin: 0; padding: 0 12px; color: #16263F; font: 400 12px/1.45 Inter, system-ui, sans-serif; }
+.p2m-post-caption b { font-weight: 600; }
+.p2m-screen.is-reel { background: #0B1322; }
+.p2m-screen.is-reel video { position: absolute; inset: 0; height: 100%; object-fit: cover; }
+/* Soft shade at the Reel's top and foot, so the white status bar and caption read over a bright room. */
+.p2m-screen.is-reel::before, .p2m-screen.is-reel::after { content: ""; position: absolute; left: 0; right: 0; pointer-events: none; }
+.p2m-screen.is-reel::before { z-index: 1; top: 0; height: 16%; background: linear-gradient(180deg, rgba(11, 19, 34, .4), rgba(11, 19, 34, 0)); }
+.p2m-screen.is-reel::after { top: 55%; bottom: 0; background: linear-gradient(180deg, rgba(11, 19, 34, 0), rgba(11, 19, 34, .55)); }
+.p2m-reel-meta { position: absolute; z-index: 1; left: 14px; right: 40px; bottom: 34px; color: #FFFFFF;
+  font: 400 12px/1.45 Inter, system-ui, sans-serif; text-shadow: 0 1px 6px rgba(0, 0, 0, .35); }
+.p2m-reel-meta div { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.p2m-reel-meta p { margin: 8px 0 0; }
+/* Play and pause: the whole screen is the button. A paused film shows the site's orange disc in the middle; a playing
+   one shows it only on hover or keyboard focus, as the other films do. */
+.p2m-phone-tap { position: absolute; z-index: 4; inset: 10px; display: grid; place-items: center; padding: 0; border: 0;
+  border-radius: 37px; background: transparent; cursor: pointer; }
+.p2m-phone-tap span { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: #E4572E;
+  box-shadow: 0 8px 22px rgba(22, 38, 63, .3); transition: opacity .2s ease, transform .15s ease; }
+.p2m-phone-tap svg { width: 22px; height: 26px; }
+.p2m-phone-tap .i-pause, .p2m-phone.is-playing .p2m-phone-tap .i-play { display: none; }
+.p2m-phone.is-playing .p2m-phone-tap .i-pause { display: block; }
+.p2m-phone.is-playing .p2m-phone-tap span { opacity: 0; }
+.p2m-phone.is-playing .p2m-phone-tap:hover span, .p2m-phone-tap:focus-visible span { opacity: 1; }
+.p2m-phone-tap:hover span { transform: scale(1.06); }
+.p2m-phone-tap:focus-visible { outline: 2px solid #E4572E; outline-offset: 4px; }
+/* Tablets on their side: the words take what's left beside the phone, with wider side margins than the page's 32px so
+   they don't hug the edge. */
+@media (min-width: 861px) and (max-width: 1024px) {
+  .p2m-social { padding: 0 56px; grid-template-columns: minmax(0, 1fr) 280px; column-gap: 56px; }
+  .p2m-social .p2m-phone { width: 280px; } .p2m-social-panel h2 { font-size: 42px; } }
+/* Phones and small tablets: one column, the label, the phone, then the tabs and copy under it. The column is at most
+   560px of words, centred under the phone, so an upright tablet doesn't run the copy edge to edge; phones keep the
+   page's 32px margins. */
+@media (max-width: 860px) {
+  .p2m-social { max-width: 624px; grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .p2m-social > * { grid-column: 1; grid-row: auto !important; }
+  .p2m-social > .p2m-social-stage { grid-column: 1; margin-top: 28px; }  /* its own desktop column rule outranks > * */
+  .p2m-social > .p2m-social-tabs { margin-top: 24px; }
+  .p2m-social-panel h2 { font-size: 34px; }
+  .p2m-social-panel p, .p2m-social-more { font-size: 17px; }
+  .p2m-social .p2m-phone { width: 260px; border-radius: 40px; padding: 9px; }
+  .p2m-phone-screen, .p2m-phone-tap { border-radius: 32px; }
+  .p2m-phone-tap { inset: 9px; }
+  .p2m-phone-bar { top: 9px; left: 9px; right: 9px; }
+  .p2m-phone-home { bottom: 15px; }
+  .p2m-screen.is-post { padding-top: 40px; }
+  .p2m-post-caption, .p2m-reel-meta { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .p2m-social-panel, .p2m-social-panel.is-on, .p2m-screen, .p2m-screen.is-on, .p2m-phone-bar, .p2m-phone-home { transition: none; }
+  .p2m-phone-tap:hover span { transform: none; }
+}
+
 </style>
 </head>
 <body>
@@ -964,7 +1090,7 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 
   var selectors = [
     'section:not(#top) .two > *', '[style*="repeat(auto-fit"]:not(form) > *', '#monthly > *',
-    '#questions h2', '#questions details', '#why-now [style*="background: #16263F"]', '#addons'
+    '#questions h2', '#questions details', '#why-now [style*="background: #16263F"]', '#addons', '.p2m-social > *'
   ];
   var seen = [], below = window.innerHeight * 0.92;
   document.querySelectorAll(selectors.join(",")).forEach(function (el) {

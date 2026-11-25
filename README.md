@@ -31,6 +31,10 @@ Then commit and push this repo to publish. The build also writes `sitemap.xml`, 
 photos in `images/` and `videos/`. `jobs.html`, `holding.html`, `robots.txt`, `_redirects`, `_headers`, `netlify.toml`
 and this README are edited here by hand.
 
+The "On social" section (a phone playing our Instagram films, after the sector films; it rotates through the sectors
+on the home page and shows one sector's film on each sector page) comes from `tools/p2m_social.py` in the same tools
+repo. Its films are `videos/social-<sector>.mp4` with posters `images/social-<sector>.jpg`.
+
 ## Moving out of the Not Bad Studio site
 
 Until 21 November 2026 these pages lived in the `notbadstudio` repo and Netlify project, with photo2motion.studio as a

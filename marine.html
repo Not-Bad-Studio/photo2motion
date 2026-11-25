@@ -919,6 +919,132 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 }
 @media (prefers-reduced-motion: reduce) { .p2m-more summary::after { transition: none; } }
 
+
+/* The social section (p2m_social.py, user, 25 Nov 2026): a phone playing one of our Instagram films, the headline
+   and copy beside it; on phones the copy stacks under the phone. Desktop: the copy on the left, centred against the
+   phone on the right, which stands on the white band with no panel behind it (user, same day: "switch the layout so
+   the phone is on the right, remove the cream contaner around the phone"). Panels share one grid cell, so swapping
+   sectors never moves the layout. The words (at most 520px) and the phone sit together as one centred pair rather
+   than at the two edges of the page (user, same day: "tighten the layout of the section, the text looks a bit close to
+   the left"): at 1280px the words start about 170px in, 100px more than the page's other sections. */
+.p2m-social { max-width: 1200px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: grid;
+  grid-template-columns: minmax(0, 520px) 300px; justify-content: center; column-gap: 96px; row-gap: 0;
+  grid-template-rows: 1fr auto auto auto auto auto auto 1fr; align-items: start; }
+.p2m-social > * { grid-column: 1; margin: 0; }
+.p2m-social > .p2m-social-stage { grid-column: 2; grid-row: 1 / -1; }
+.p2m-social > .p2m-social-label { grid-row: 2; }
+.p2m-social > .p2m-social-tabs { grid-row: 3; margin-top: 18px; }
+.p2m-social > .p2m-social-panels { grid-row: 4; margin-top: 18px; }
+.p2m-social > .p2m-social-more { grid-row: 5; margin-top: 16px; }
+.p2m-social > .p2m-social-actions { grid-row: 6; margin-top: 28px; }
+.p2m-social > .p2m-social-note { grid-row: 7; margin-top: 18px; }
+.p2m-social-label { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: #E4572E; font-weight: 600; }
+.p2m-social-panels { display: grid; }
+/* The old words fade out first, then the new ones fade in, so the two never show over each other. */
+.p2m-social-panel { grid-area: 1 / 1; display: flex; flex-direction: column; gap: 18px; opacity: 0; visibility: hidden;
+  transition: opacity .25s ease, visibility 0s linear .25s; }
+.p2m-social-panel.is-on { opacity: 1; visibility: visible; transition: opacity .4s ease .25s; }
+.p2m-social-panel h2 { margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 48px; font-weight: 600;
+  letter-spacing: -0.03em; line-height: 1.05; text-wrap: balance; }
+.p2m-social-panel p, .p2m-social-more { font-size: 18px; line-height: 1.6; color: #4F5A6B; text-wrap: pretty; }
+.p2m-social-panel p { margin: 0; }
+.p2m-social-more { color: #16263F; font-weight: 500; }
+.p2m-social-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.p2m-social-actions a { display: inline-flex; align-items: center; height: 52px; padding: 0 26px; border-radius: 26px;
+  font-weight: 600; text-decoration: none; box-sizing: border-box; }
+.p2m-social-actions a.p2m-social-ig { padding: 0 22px; border: 1.5px solid #16263F; color: #16263F; }
+.p2m-social-actions a.p2m-social-ig:hover { background: #16263F; color: #F3F1EC; }
+.p2m-social-note { font-size: 14px; line-height: 1.5; color: #4F5A6B; }
+/* Sector tabs (home page only): the one showing is navy, and an orange line under it fills as its film plays. */
+.p2m-social-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.p2m-social-tabs button { height: 38px; padding: 0 16px; border: 1.5px solid #D9D5CC; border-radius: 19px; background: #FFFFFF
+  linear-gradient(#E4572E, #E4572E) no-repeat left bottom / calc(var(--p, 0) * 100%) 3px; color: #16263F;
+  font: 600 14px/1 Inter, system-ui, sans-serif; cursor: pointer; transition: border-color .2s ease, background-color .2s ease; }
+.p2m-social-tabs button:hover { border-color: #16263F; }
+.p2m-social-tabs button[aria-selected="true"] { background-color: #16263F; border-color: #16263F; color: #F3F1EC; }
+.p2m-social-tabs button:focus-visible { outline: 2px solid #E4572E; outline-offset: 3px; }
+/* The phone. */
+/* Room under the phone and its shadow (user, 25 Nov 2026: "add a bit of space under the phone"): before How it works on
+   desktop, before the tabs and words when they stack under it. */
+.p2m-social-stage { display: grid; place-items: center; padding-bottom: 28px; }
+.p2m-phone { position: relative; width: 300px; max-width: 100%; aspect-ratio: 300 / 616; padding: 10px; box-sizing: border-box;
+  border-radius: 46px; background: #16263F; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08),
+  0 34px 60px -24px rgba(22, 38, 63, .5), 0 14px 28px -14px rgba(22, 38, 63, .35); }
+.p2m-phone-screen { position: relative; width: 100%; height: 100%; overflow: hidden; isolation: isolate; border-radius: 37px;
+  background: #FFFFFF; }
+.p2m-phone-bar { position: absolute; z-index: 3; top: 10px; left: 10px; right: 10px; height: 40px; display: flex;
+  align-items: center; justify-content: space-between; padding: 0 22px 0 30px; color: #16263F; pointer-events: none;
+  font: 600 12px/1 Inter, system-ui, sans-serif; transition: color .45s ease; }
+.p2m-phone-island { position: absolute; top: 10px; left: 50%; width: 86px; height: 24px; margin-left: -43px;
+  border-radius: 8px; background: #0B1322; }
+.p2m-phone-home { position: absolute; z-index: 3; bottom: 17px; left: 50%; width: 96px; height: 4px; margin-left: -48px;
+  border-radius: 2px; background: #16263F; opacity: .85; pointer-events: none; transition: background-color .45s ease; }
+.p2m-phone.on-reel .p2m-phone-bar { color: #FFFFFF; }
+.p2m-phone.on-reel .p2m-phone-home { background: #FFFFFF; }
+.p2m-screen { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden;
+  transition: opacity .45s ease, visibility 0s linear .45s; }
+.p2m-screen.is-on { opacity: 1; visibility: visible; transition: opacity .45s ease; }
+.p2m-screen video { display: block; width: 100%; background: #E3E0D9; }
+.p2m-screen.is-post { padding-top: 44px; background: #FFFFFF; }
+.p2m-screen.is-post video { aspect-ratio: 4 / 5; object-fit: cover; }
+.p2m-post-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px; color: #16263F;
+  font: 600 12px/1.2 Inter, system-ui, sans-serif; }
+.p2m-avatar { width: 26px; height: 26px; border-radius: 50%; flex: none; }
+.p2m-post-icons { display: flex; gap: 14px; padding: 10px 12px 6px; }
+.p2m-post-icons svg { width: 21px; height: 21px; fill: none; stroke: #16263F; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.p2m-post-caption { margin: 0; padding: 0 12px; color: #16263F; font: 400 12px/1.45 Inter, system-ui, sans-serif; }
+.p2m-post-caption b { font-weight: 600; }
+.p2m-screen.is-reel { background: #0B1322; }
+.p2m-screen.is-reel video { position: absolute; inset: 0; height: 100%; object-fit: cover; }
+/* Soft shade at the Reel's top and foot, so the white status bar and caption read over a bright room. */
+.p2m-screen.is-reel::before, .p2m-screen.is-reel::after { content: ""; position: absolute; left: 0; right: 0; pointer-events: none; }
+.p2m-screen.is-reel::before { z-index: 1; top: 0; height: 16%; background: linear-gradient(180deg, rgba(11, 19, 34, .4), rgba(11, 19, 34, 0)); }
+.p2m-screen.is-reel::after { top: 55%; bottom: 0; background: linear-gradient(180deg, rgba(11, 19, 34, 0), rgba(11, 19, 34, .55)); }
+.p2m-reel-meta { position: absolute; z-index: 1; left: 14px; right: 40px; bottom: 34px; color: #FFFFFF;
+  font: 400 12px/1.45 Inter, system-ui, sans-serif; text-shadow: 0 1px 6px rgba(0, 0, 0, .35); }
+.p2m-reel-meta div { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.p2m-reel-meta p { margin: 8px 0 0; }
+/* Play and pause: the whole screen is the button. A paused film shows the site's orange disc in the middle; a playing
+   one shows it only on hover or keyboard focus, as the other films do. */
+.p2m-phone-tap { position: absolute; z-index: 4; inset: 10px; display: grid; place-items: center; padding: 0; border: 0;
+  border-radius: 37px; background: transparent; cursor: pointer; }
+.p2m-phone-tap span { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: #E4572E;
+  box-shadow: 0 8px 22px rgba(22, 38, 63, .3); transition: opacity .2s ease, transform .15s ease; }
+.p2m-phone-tap svg { width: 22px; height: 26px; }
+.p2m-phone-tap .i-pause, .p2m-phone.is-playing .p2m-phone-tap .i-play { display: none; }
+.p2m-phone.is-playing .p2m-phone-tap .i-pause { display: block; }
+.p2m-phone.is-playing .p2m-phone-tap span { opacity: 0; }
+.p2m-phone.is-playing .p2m-phone-tap:hover span, .p2m-phone-tap:focus-visible span { opacity: 1; }
+.p2m-phone-tap:hover span { transform: scale(1.06); }
+.p2m-phone-tap:focus-visible { outline: 2px solid #E4572E; outline-offset: 4px; }
+/* Tablets on their side: the words take what's left beside the phone, with wider side margins than the page's 32px so
+   they don't hug the edge. */
+@media (min-width: 861px) and (max-width: 1024px) {
+  .p2m-social { padding: 0 56px; grid-template-columns: minmax(0, 1fr) 280px; column-gap: 56px; }
+  .p2m-social .p2m-phone { width: 280px; } .p2m-social-panel h2 { font-size: 42px; } }
+/* Phones and small tablets: one column, the label, the phone, then the tabs and copy under it. The column is at most
+   560px of words, centred under the phone, so an upright tablet doesn't run the copy edge to edge; phones keep the
+   page's 32px margins. */
+@media (max-width: 860px) {
+  .p2m-social { max-width: 624px; grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .p2m-social > * { grid-column: 1; grid-row: auto !important; }
+  .p2m-social > .p2m-social-stage { grid-column: 1; margin-top: 28px; }  /* its own desktop column rule outranks > * */
+  .p2m-social > .p2m-social-tabs { margin-top: 24px; }
+  .p2m-social-panel h2 { font-size: 34px; }
+  .p2m-social-panel p, .p2m-social-more { font-size: 17px; }
+  .p2m-social .p2m-phone { width: 260px; border-radius: 40px; padding: 9px; }
+  .p2m-phone-screen, .p2m-phone-tap { border-radius: 32px; }
+  .p2m-phone-tap { inset: 9px; }
+  .p2m-phone-bar { top: 9px; left: 9px; right: 9px; }
+  .p2m-phone-home { bottom: 15px; }
+  .p2m-screen.is-post { padding-top: 40px; }
+  .p2m-post-caption, .p2m-reel-meta { font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .p2m-social-panel, .p2m-social-panel.is-on, .p2m-screen, .p2m-screen.is-on, .p2m-phone-bar, .p2m-phone-home { transition: none; }
+  .p2m-phone-tap:hover span { transform: none; }
+}
+
 </style>
 <style>
 /* Sector pages (build_p2m_sectors.py): a shorter hero than the home page's, with the sector's own film under it
@@ -1026,6 +1152,17 @@ header.p2m-navy .nav-l > a:hover, header.p2m-navy .nav-r > a:not([style*="#E4572
 <a class="p2m-cta" href="#pricing" data-p2m-plan="Single film">Try it with your photos <span class="p2m-arrow" aria-hidden="true">→</span></a>
 </section>
 </div>
+
+<section id="social" style="background: #FFFFFF; padding: 112px 0">
+<div class="p2m-social">
+<p class="p2m-social-label">On social</p>
+<div class="p2m-social-stage"><div class="p2m-phone"><div class="p2m-phone-bar" aria-hidden="true"><span>9:41</span><i class="p2m-phone-island"></i><svg viewBox="0 0 44 12" width="44" height="12"><path d="M1 9h2v2H1zM5 7h2v4H5zM9 5h2v6H9zM13 3h2v8h-2z" fill="currentColor"/><rect x="22.5" y="1.5" width="18" height="9" rx="2.5" fill="none" stroke="currentColor" opacity=".5"/><rect x="24" y="3" width="13" height="6" rx="1.2" fill="currentColor"/><path d="M42 4.5v3" stroke="currentColor" stroke-linecap="round" opacity=".5"/></svg></div><div class="p2m-phone-screen"><div class="p2m-screen is-post is-on" data-sector="marine"><div class="p2m-post-head" aria-hidden="true"><img class="p2m-avatar" src="/images/social-avatar.jpg" alt="" width="26" height="26"><b>photo2motion.studio</b></div><video src="/videos/social-marine.mp4" poster="/images/social-marine.jpg" muted playsinline preload="none" loop aria-label="A power catamaran&#x27;s film as an Instagram post: the sun pads, the aft deck, the saloon, a cabin and the boat at anchor, made from its photos."></video><div class="p2m-post-icons" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><svg viewBox="0 0 24 24"><path d="M20 11.5a8 8 0 0 1-11.6 7.1L4 20l1.4-4.2A8 8 0 1 1 20 11.5z"/></svg><svg viewBox="0 0 24 24"><path d="M21 4 10 14M21 4l-7 17-4-7-7-4z"/></svg></div><p class="p2m-post-caption" aria-hidden="true"><b>photo2motion.studio</b> A power catamaran at anchor, deck to cabin.</p></div></div><i class="p2m-phone-home" aria-hidden="true"></i><button type="button" class="p2m-phone-tap" aria-label="Play the film"><span><svg class="i-play" viewBox="0 0 22 26" aria-hidden="true"><path d="M3 2 L20 13 L3 24 Z" fill="#F3F1EC"/></svg><svg class="i-pause" viewBox="0 0 22 26" aria-hidden="true"><rect x="3" y="2" width="5.5" height="22" rx="1.5" fill="#F3F1EC"/><rect x="13.5" y="2" width="5.5" height="22" rx="1.5" fill="#F3F1EC"/></svg></span></button></div></div>
+<div class="p2m-social-panels"><div class="p2m-social-panel is-on" id="social-panel-marine"><h2>No day on the water.</h2><p>Boats are rarely in one place long enough to film. This power catamaran’s film was made from its photos, deck to cabin, and posted as a Reel.</p></div></div>
+<p class="p2m-social-more">A 4:5 cut for the feed comes with every pack, or £25 on a single film.</p>
+<div class="p2m-social-actions"><a href="#free-clip" style="background: #E4572E; color: #FFFFFF">Get a free clip</a><a href="https://www.instagram.com/photo2motion.studio/" target="_blank" rel="noopener" class="p2m-social-ig">Follow us on Instagram</a></div>
+<p class="p2m-social-note">Real photos, animated with AI. Every shot directed and checked by people.</p>
+</div>
+</section>
 
 <section id="how" style="background: #FFFFFF; padding: 112px 0">
 <div style="max-width: 1200px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 56px">
@@ -1463,6 +1600,78 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
 })();
 </script>
 <script>
+// The social section (p2m_social.py): the phone plays its film when it's on screen (muted). On the home page it moves
+// to the next sector when a film ends, with the copy, and the tabs jump to one (which stops the rotation and loops it).
+// The screen is the play/pause button. With reduced motion on, nothing starts by itself.
+(function () {
+  var root = document.getElementById("social");
+  if (!root) return;
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var phone = root.querySelector(".p2m-phone");
+  var button = root.querySelector(".p2m-phone-tap");
+  var screens = [].slice.call(root.querySelectorAll(".p2m-screen"));
+  var panels = [].slice.call(root.querySelectorAll(".p2m-social-panel"));
+  var tabs = [].slice.call(root.querySelectorAll('[role="tab"]'));
+  var index = 0, inView = false, userPaused = false;
+  function video() { return screens[index].querySelector("video"); }
+  function sync() {
+    var v = video(), playing = !v.paused && !v.ended;
+    phone.classList.toggle("is-playing", playing);
+    phone.classList.toggle("on-reel", screens[index].classList.contains("is-reel"));
+    button.setAttribute("aria-label", (playing ? "Pause " : "Play ") + "the " + (tabs[index] ? tabs[index].textContent + " " : "") + "film");
+  }
+  function play() { var v = video(); v.preload = "auto"; var p = v.play(); if (p && p.catch) p.catch(function () { sync(); }); }
+  function show(i, start) {
+    var old = video();
+    old.pause();
+    if (tabs[index]) tabs[index].style.setProperty("--p", 0);
+    index = i;
+    screens.forEach(function (s, n) { s.classList.toggle("is-on", n === i); s.setAttribute("aria-hidden", String(n !== i)); });
+    panels.forEach(function (p, n) { p.classList.toggle("is-on", n === i); p.setAttribute("aria-hidden", String(n !== i)); });
+    tabs.forEach(function (t, n) { t.setAttribute("aria-selected", String(n === i)); t.tabIndex = n === i ? 0 : -1; });
+    var v = video();
+    try { v.currentTime = 0; } catch (e) { /* not loaded yet: it starts at 0 anyway */ }
+    if (start) play();
+    sync();
+  }
+  screens.forEach(function (s, n) {
+    var v = s.querySelector("video");
+    v.addEventListener("play", sync);
+    v.addEventListener("pause", sync);
+    v.addEventListener("timeupdate", function () { if (n === index && tabs[n] && v.duration) tabs[n].style.setProperty("--p", v.currentTime / v.duration); });
+    v.addEventListener("ended", function () { if (n === index && screens.length > 1) show((index + 1) % screens.length, inView && !userPaused); });
+  });
+  function pick(n) {
+    // A visitor's pick stays put: no more rotation, and that film loops.
+    screens.forEach(function (s) { s.querySelector("video").loop = true; });
+    userPaused = false;
+    show(n, true);
+  }
+  tabs.forEach(function (t, n) {
+    t.addEventListener("click", function () { pick(n); });
+    t.addEventListener("keydown", function (e) {
+      var step = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      var to = e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : (n + step + tabs.length) % tabs.length;
+      if (!step && e.key !== "Home" && e.key !== "End") return;
+      e.preventDefault();
+      tabs[to].focus();
+      pick(to);
+    });
+  });
+  button.addEventListener("click", function () {
+    var v = video();
+    if (v.paused) { userPaused = false; play(); } else { userPaused = true; v.pause(); }
+  });
+  if (!still && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      inView = entries[0].isIntersecting;
+      if (inView && !userPaused) play(); else if (!inView) video().pause();
+    }, { threshold: 0.4 }).observe(phone);
+  }
+  sync();
+})();
+</script>
+<script>
 // Subtle motion: tag the buttons and sector cards for their hover, give the header its shadow once the page scrolls,
 // settle the hero in, and fade blocks up as they come into view. Anything already on screen when the page opens is
 // left alone (no flash), and with reduced motion or no IntersectionObserver nothing is hidden at all.
@@ -1490,7 +1699,7 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
 
   var selectors = [
     'section:not(#top) .two > *', '[style*="repeat(auto-fit"]:not(form) > *', '#monthly > *',
-    '#questions h2', '#questions details', '#why-now [style*="background: #16263F"]', '#addons'
+    '#questions h2', '#questions details', '#why-now [style*="background: #16263F"]', '#addons', '.p2m-social > *'
   ];
   var seen = [], below = window.innerHeight * 0.92;
   document.querySelectorAll(selectors.join(",")).forEach(function (el) {
@@ -1858,7 +2067,7 @@ document.querySelectorAll('a[href="#faq-ai"]').forEach(function (a) {
   };
 })();
 
-P2MCheckout.init({ pricing: {"heading": "Simple prices, 24-hour delivery", "includes": "Each film is one boat, property or room: 15 to 20 seconds from 4 to 6 of your photos, with your photographer credited.", "includesList": ["A 15 to 20 second film from 4 to 6 photos", "Landscape (16:9) for your website, listings and ads", "Your photographer credited", "Back within 24 hours of your order and photos, Monday to Friday"], "groups": [{"name": "Packs", "note": "", "plans": [{"name": "Single film", "price": "£95", "unit": "", "per": "£95 a film", "for": "One hero boat, villa or room", "payUrl": "https://buy.stripe.com/28E28s4qhdxq5AI3Hz1VK09", "films": 1, "stripeProduct": "prod_Vb0JSH30FPgyOW", "gets": ["1 × 16:9 film", "Back within 24 hours"], "add": "Add 4:5 Social for £25"}, {"name": "3 films", "price": "£270", "unit": "", "per": "£90 a film", "for": "A hotel's best rooms, or a small fleet", "payUrl": "https://buy.stripe.com/8x2aEY4qh0KEbZ64LD1VK0a", "films": 3, "stripeProduct": "prod_Vb0L0R8RAXFETJ", "was": "£285", "gets": ["3 × 16:9 films", "3 × 4:5 Social", "All back within 24 hours"], "total": "6 videos in all"}, {"name": "5 films", "price": "£400", "unit": "", "per": "£80 a film", "for": "Boat fleets and holiday-let portfolios", "payUrl": "https://buy.stripe.com/14AeVeaOF0KEd3a3Hz1VK0b", "films": 5, "stripeProduct": "prod_Vb0M217JfWYeEg", "was": "£475", "gets": ["5 × 16:9 films", "5 × 4:5 Social", "All back within 24 hours"], "total": "10 videos in all"}, {"name": "10 films", "price": "£700", "unit": "", "per": "£70 a film", "for": "Bigger fleets and agencies", "payUrl": "https://buy.stripe.com/eVqfZi0a1ctm6EM3Hz1VK0c", "films": 10, "stripeProduct": "prod_Vb0NsrnyT3wKtN", "was": "£950", "gets": ["10 × 16:9 films", "10 × 4:5 Social", "The first 5 within 24 hours, then 5 a day"], "total": "20 videos in all"}]}, {"name": "Monthly", "note": "For charter fleets and hotel groups with new boats, rooms or offers every month. Unused films carry over to the next month, and the minimum term is three months.", "plans": [{"name": "4 films a month", "price": "£280", "unit": "a month", "per": "£70 a film", "for": "Charter brokers with new boats each month", "payUrl": "https://buy.stripe.com/7sY4gAaOFale7IQ0vn1VK0d", "films": 4, "stripeProduct": "prod_Vb0OvcbGOGSX4S", "gets": ["4 × 16:9 films a month", "4 × 4:5 Social", "Unused films carry over"], "total": "8 videos a month"}, {"name": "10 films a month", "price": "£650", "unit": "a month", "per": "£65 a film", "for": "Hotel groups and larger charter fleets", "payUrl": "https://buy.stripe.com/6oUfZi7Ct2SM3sA0vn1VK0e", "films": 10, "stripeProduct": "prod_Vb0P1TR5Flm0k8", "gets": ["10 × 16:9 films a month", "10 × 4:5 Social", "Unused films carry over"], "total": "20 videos a month"}]}], "addons": ["Premium (music, a line on each scene, your logo): +£20", "Voice-over: +£35", "A round of tweaks: +£35", "30-second cut from 6 to 8 photos: +£60", "4:5 Social for a single film: +£25"], "terms": "The 24 hours start once we have your order and photos we can use. Order on a Friday afternoon or at the weekend and we start Monday at 9am, UK time. If a photo won't work, say someone's in shot or it's too dark, we'll tell you within a few hours and start again when the new one arrives. Packs come in daily batches: the first 5 films within 24 hours, then 5 a day. If anything will take longer, we'll tell you straight away.", "packNote": "Packs of 3 or more also include a 4:5 Social cut of every film.", "addonItems": [{"id": "premium", "name": "Premium: music, a line on each scene and your logo", "price": 20, "note": "Background music, a line of text on each scene and your logo on the end frame. Voice-over is separate."}, {"id": "voice", "name": "Voice-over", "price": 35, "note": "A voice reading a short line over each scene."}, {"id": "tweaks", "name": "A round of tweaks", "price": 35, "note": "One round of changes once you've seen it."}, {"id": "long", "name": "30-second cut from 6 to 8 photos", "price": 60, "note": "A longer film, for a walk-through."}, {"id": "social", "name": "4:5 Social", "price": 25, "singleOnly": true, "note": "A 4:5 version for the feed. Included with packs of 3 or more."}], "editOffers": {"hospitality-signature": {"name": "Premium film", "plan": "Single film", "addons": ["premium"], "price": 85, "was": 115, "about": "The film we made, with a line on each scene and background music", "includes": ["The film we made, with a line on each scene in subtitles", "Background music, added when you order", "Your logo on the end frame", "Full-quality file for your website, booking pages and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07"}, "hospitality-story": {"name": "Full film", "plan": "Single film", "addons": [], "price": 65, "about": "The film we made, without subtitles, ending on your name", "includes": ["The film we made, ending on your name and web address", "Full-quality file for your website, booking pages and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "was": 95, "ends": "2026-12-07"}, "marine-signature": {"name": "Premium film", "plan": "Single film", "addons": ["premium"], "price": 85, "was": 115, "about": "The film we made, with a line on each scene and background music", "includes": ["The film we made, with a line on each scene in subtitles", "Background music, added when you order", "Your logo on the end frame", "Full-quality file for your website, charter listings and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07"}, "marine-story": {"name": "Full film", "plan": "Single film", "addons": [], "price": 65, "was": 95, "about": "The film we made, without subtitles, ending on your name", "includes": ["The film we made, ending on your name and web address", "Full-quality file for your website, charter listings and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07"}, "property-signature": {"name": "Premium film", "plan": "Single film", "addons": ["premium"], "price": 85, "was": 115, "about": "The film we made, with a line on each scene and background music", "includes": ["The film we made, with a line on each scene in subtitles", "Background music, added when you order", "Your logo on the end frame", "Full-quality file for your website, portal listings and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07"}, "property-story": {"name": "Full film", "plan": "Single film", "addons": [], "price": 65, "was": 95, "about": "The film we made, without subtitles, ending on your name", "includes": ["The film we made, ending on your name and web address", "Full-quality file for your website, portal listings and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07"}, "social-4x5": {"name": "4:5 social film", "plan": "Single film", "addons": [], "price": 65, "was": 95, "about": "The 4:5 film we made for social", "includes": ["The 4:5 film we made, about 17 seconds", "Full-quality 1080 x 1350 file for Instagram, Facebook and LinkedIn", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07", "_note": "User, 12 Nov 2026: 'add download video now, with payment process' on the 4:5 phone section. Priced as the ready-made Full film offer (£65, usually £175) until the user sets a price."}, "kitchens-signature": {"name": "Premium film", "plan": "Single film", "addons": ["premium"], "price": 85, "was": 115, "about": "The film we made, with a line on each scene and background music", "includes": ["The film we made, with a line on each scene in subtitles", "Background music, added when you order", "Your logo on the end frame", "Full-quality file for your website, social and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07", "_note": "12 Nov 2026, 'all sectors': the ready-made offer for kitchen pages too, as property's."}, "kitchens-story": {"name": "Full film", "plan": "Single film", "addons": [], "price": 65, "was": 95, "about": "The film we made, without subtitles, ending on your name", "includes": ["The film we made, ending on your name and web address", "Full-quality file for your website, social and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07", "_note": "12 Nov 2026, 'all sectors': the ready-made offer for kitchen pages too, as property's."}}, "editOffersNote": "User, 11 Nov 2026 (\"the pre built film price seems expensive for an offer ... premium should have background music but not vo\", then \"Yes, apply it\"): a film we have already made sells at a deep cut, below a new film. Premium = subtitles + background music + logo (voice-over stays an add-on), usually £195 (user, 11 Nov 2026: \"maybe 199\", then \"or 195\": single £175 + the Premium add-on at £20, which replaced the separate music, captions and logo add-ons at £25 each). \"ends\" is shown on the page only; the checkout keeps honouring the price after it.", "freeClip": {"name": "Free clip", "photos": 3, "seconds": 10, "about": "3 photos in, a 10-second film back within 24 hours, Monday to Friday, with our end card. One per business."}, "deliveryNote": "User, 11 Nov 2026 (\"should there be a caveate around 24 hr delivery\", then \"ok to delivery caveat\"): the clock starts once we have the order and photos we can use; ready-made films count from the order. The full wording is the terms line and the shared FAQ \"When will it arrive?\" (faq.json).", "_wasNote": "User, 11 Nov 2026: 'on pricing show the price of 1x film x3, x5 slashed vs the package deal price', then 'the price update should be for the 10 films too'. 'was' is the Single film price times the pack size, shown struck before the pack price (custom pages and the home page). Change the Single film price and re-run this sum.", "_getsNote": "User, 12 Nov 2026: 'in the pricing cards list what you get with ticks. so 1x 16.9 (and res?) then 3x 16.9, 3x4.5 social etc. so it shows they get alot', then 'drop the res, remove 9.16, just have Social after 4.5'. Packs come with a 4:5 Social cut of every film (9:16 and 1:1 are no longer offered). 'gets' is each card's ticked list, 'total' its count of videos, 'add' the single film's social add-on line.", "_priceNote": "User, 25 Nov 2026: \"new price chat, i think under 100 might be better and still a good profit?\" (the single film under £100), then \"Yes, use B\" and \"B with firmer monthly\": single £95, packs £270 / £400 / £700 (£90, £80, £70 a film), monthly £280 (4 films) and £650 (10 films). Ready-made Premium £85 (was £95) so a film we've made stays below a new one; Full and 4:5 stay £65. The £140 film-now offer (to 7 Dec) was removed, as £95 is lower. Add-ons unchanged. New Stripe payment links at these prices made 25 Nov 2026 (same products, a new default price on each, promotion codes on, business name collected, redirect to notbadstudio.com/motion-thanks); the old £175-£850 links are still active in Stripe."}, api: "/api/checkout", source: "photo2motion-marine", suggested: "5 films", suggestedLabel: "Recommended", freeClipUrl: "#free-clip" });
+P2MCheckout.init({ pricing: {"heading": "Simple prices, 24-hour delivery", "includes": "Each film is one boat, property or room: 15 to 20 seconds from 4 to 6 of your photos, with your photographer credited.", "includesList": ["A 15 to 20 second film from 4 to 6 photos", "Landscape (16:9) for your website, listings and ads", "Your photographer credited", "Back within 24 hours of your order and photos, Monday to Friday"], "groups": [{"name": "Packs", "note": "", "plans": [{"name": "Single film", "price": "£95", "unit": "", "per": "£95 a film", "for": "One hero boat, villa or room", "payUrl": "https://buy.stripe.com/28E28s4qhdxq5AI3Hz1VK09", "films": 1, "stripeProduct": "prod_Vb0JSH30FPgyOW", "gets": ["1 × 16:9 film", "Back within 24 hours"], "add": "Add 4:5 Social for £25"}, {"name": "3 films", "price": "£270", "unit": "", "per": "£90 a film", "for": "A hotel's best rooms, or a small fleet", "payUrl": "https://buy.stripe.com/8x2aEY4qh0KEbZ64LD1VK0a", "films": 3, "stripeProduct": "prod_Vb0L0R8RAXFETJ", "was": "£285", "gets": ["3 × 16:9 films", "3 × 4:5 Social", "All back within 24 hours"], "total": "6 videos in all"}, {"name": "5 films", "price": "£400", "unit": "", "per": "£80 a film", "for": "Boat fleets and holiday-let portfolios", "payUrl": "https://buy.stripe.com/14AeVeaOF0KEd3a3Hz1VK0b", "films": 5, "stripeProduct": "prod_Vb0M217JfWYeEg", "was": "£475", "gets": ["5 × 16:9 films", "5 × 4:5 Social", "All back within 24 hours"], "total": "10 videos in all"}, {"name": "10 films", "price": "£700", "unit": "", "per": "£70 a film", "for": "Bigger fleets and agencies", "payUrl": "https://buy.stripe.com/eVqfZi0a1ctm6EM3Hz1VK0c", "films": 10, "stripeProduct": "prod_Vb0NsrnyT3wKtN", "was": "£950", "gets": ["10 × 16:9 films", "10 × 4:5 Social", "The first 5 within 24 hours, then 5 a day"], "total": "20 videos in all"}]}, {"name": "Monthly", "note": "For charter fleets and hotel groups with new boats, rooms or offers every month. Unused films carry over to the next month, and the minimum term is three months.", "plans": [{"name": "4 films a month", "price": "£280", "unit": "a month", "per": "£70 a film", "for": "Charter brokers with new boats each month", "payUrl": "https://buy.stripe.com/7sY4gAaOFale7IQ0vn1VK0d", "films": 4, "stripeProduct": "prod_Vb0OvcbGOGSX4S", "gets": ["4 × 16:9 films a month", "4 × 4:5 Social", "Unused films carry over"], "total": "8 videos a month"}, {"name": "10 films a month", "price": "£650", "unit": "a month", "per": "£65 a film", "for": "Hotel groups and larger charter fleets", "payUrl": "https://buy.stripe.com/6oUfZi7Ct2SM3sA0vn1VK0e", "films": 10, "stripeProduct": "prod_Vb0P1TR5Flm0k8", "gets": ["10 × 16:9 films a month", "10 × 4:5 Social", "Unused films carry over"], "total": "20 videos a month"}]}], "addons": ["Premium (music, a line on each scene, your logo): +£20", "Voice-over: +£35", "A round of tweaks: +£35", "30-second cut from 6 to 8 photos: +£60", "4:5 Social for a single film: +£25"], "terms": "The 24 hours start once we have your order and photos we can use. Order on a Friday afternoon or at the weekend and we start Monday at 9am, UK time. If a photo won't work, say someone's in shot or it's too dark, we'll tell you within a few hours and start again when the new one arrives. Packs come in daily batches: the first 5 films within 24 hours, then 5 a day. If anything will take longer, we'll tell you straight away.", "packNote": "Packs of 3 or more also include a 4:5 Social cut of every film.", "addonItems": [{"id": "premium", "name": "Premium: music, a line on each scene and your logo", "price": 20, "note": "Background music, a line of text on each scene and your logo on the end frame. Voice-over is separate."}, {"id": "voice", "name": "Voice-over", "price": 35, "note": "A voice reading a short line over each scene."}, {"id": "tweaks", "name": "A round of tweaks", "price": 35, "note": "One round of changes once you've seen it."}, {"id": "long", "name": "30-second cut from 6 to 8 photos", "price": 60, "note": "A longer film, for a walk-through."}, {"id": "social", "name": "4:5 Social", "price": 25, "singleOnly": true, "note": "A 4:5 version for the feed. Included with packs of 3 or more."}], "editOffers": {"hospitality-signature": {"name": "Premium film", "plan": "Single film", "addons": ["premium"], "price": 85, "was": 115, "about": "The film we made, with a line on each scene and background music", "includes": ["The film we made, with a line on each scene in subtitles", "Background music, added when you order", "Your logo on the end frame", "Full-quality file for your website, booking pages and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07"}, "hospitality-story": {"name": "Full film", "plan": "Single film", "addons": [], "price": 65, "about": "The film we made, without subtitles, ending on your name", "includes": ["The film we made, ending on your name and web address", "Full-quality file for your website, booking pages and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "was": 95, "ends": "2026-12-07"}, "marine-signature": {"name": "Premium film", "plan": "Single film", "addons": ["premium"], "price": 85, "was": 115, "about": "The film we made, with a line on each scene and background music", "includes": ["The film we made, with a line on each scene in subtitles", "Background music, added when you order", "Your logo on the end frame", "Full-quality file for your website, charter listings and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07"}, "marine-story": {"name": "Full film", "plan": "Single film", "addons": [], "price": 65, "was": 95, "about": "The film we made, without subtitles, ending on your name", "includes": ["The film we made, ending on your name and web address", "Full-quality file for your website, charter listings and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07"}, "property-signature": {"name": "Premium film", "plan": "Single film", "addons": ["premium"], "price": 85, "was": 115, "about": "The film we made, with a line on each scene and background music", "includes": ["The film we made, with a line on each scene in subtitles", "Background music, added when you order", "Your logo on the end frame", "Full-quality file for your website, portal listings and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07"}, "property-story": {"name": "Full film", "plan": "Single film", "addons": [], "price": 65, "was": 95, "about": "The film we made, without subtitles, ending on your name", "includes": ["The film we made, ending on your name and web address", "Full-quality file for your website, portal listings and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07"}, "social-4x5": {"name": "4:5 social film", "plan": "Single film", "addons": [], "price": 65, "was": 95, "about": "The 4:5 film we made for social", "includes": ["The 4:5 film we made, about 17 seconds", "Full-quality 1080 x 1350 file for Instagram, Facebook and LinkedIn", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07", "_note": "User, 12 Nov 2026: 'add download video now, with payment process' on the 4:5 phone section. Priced as the ready-made Full film offer (£65, usually £175) until the user sets a price."}, "kitchens-signature": {"name": "Premium film", "plan": "Single film", "addons": ["premium"], "price": 85, "was": 115, "about": "The film we made, with a line on each scene and background music", "includes": ["The film we made, with a line on each scene in subtitles", "Background music, added when you order", "Your logo on the end frame", "Full-quality file for your website, social and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07", "_note": "12 Nov 2026, 'all sectors': the ready-made offer for kitchen pages too, as property's."}, "kitchens-story": {"name": "Full film", "plan": "Single film", "addons": [], "price": 65, "was": 95, "about": "The film we made, without subtitles, ending on your name", "includes": ["The film we made, ending on your name and web address", "Full-quality file for your website, social and ads", "Your photographer credited", "Delivered within 24 hours of your order, Monday to Friday"], "ends": "2026-12-07", "_note": "12 Nov 2026, 'all sectors': the ready-made offer for kitchen pages too, as property's."}}, "editOffersNote": "User, 11 Nov 2026 (\"the pre built film price seems expensive for an offer ... premium should have background music but not vo\", then \"Yes, apply it\"): a film we have already made sells at a deep cut, below a new film. Premium = subtitles + background music + logo (voice-over stays an add-on), usually £195 (user, 11 Nov 2026: \"maybe 199\", then \"or 195\": single £175 + the Premium add-on at £20, which replaced the separate music, captions and logo add-ons at £25 each). \"ends\" is shown on the page only; the checkout keeps honouring the price after it.", "freeClip": {"name": "Free clip", "photos": 3, "seconds": 10, "about": "3 photos in, a 10-second film back within 24 hours, Monday to Friday, with our end card. One per business."}, "deliveryNote": "User, 11 Nov 2026 (\"should there be a caveate around 24 hr delivery\", then \"ok to delivery caveat\"): the clock starts once we have the order and photos we can use; ready-made films count from the order. The full wording is the terms line and the shared FAQ \"When will it arrive?\" (faq.json).", "_wasNote": "User, 11 Nov 2026: 'on pricing show the price of 1x film x3, x5 slashed vs the package deal price', then 'the price update should be for the 10 films too'. 'was' is the Single film price times the pack size, shown struck before the pack price (custom pages and the home page). Change the Single film price and re-run this sum.", "_getsNote": "User, 12 Nov 2026: 'in the pricing cards list what you get with ticks. so 1x 16.9 (and res?) then 3x 16.9, 3x4.5 social etc. so it shows they get alot', then 'drop the res, remove 9.16, just have Social after 4.5'. Packs come with a 4:5 Social cut of every film (9:16 and 1:1 are no longer offered). 'gets' is each card's ticked list, 'total' its count of videos, 'add' the single film's social add-on line.", "_priceNote": "User, 25 Nov 2026: \"new price chat, i think under 100 might be better and still a good profit?\" (the single film under £100), then \"Yes, use B\" and \"B with firmer monthly\": single £95, packs £270 / £400 / £700 (£90, £80, £70 a film), monthly £280 (4 films) and £650 (10 films). Ready-made Premium £85 (was £95) so a film we've made stays below a new one; Full and 4:5 stay £65. The £140 film-now offer (to 7 Dec) was removed, as £95 is lower. Add-ons unchanged. New Stripe payment links at these prices made 25 Nov 2026 (same products, a new default price on each, promotion codes on, business name collected, redirect to notbadstudio.com/motion-thanks); the old £175-£850 links are still active in Stripe."}, api: "/api/checkout", source: "photo2motion-marine", suggested: "5 films", suggestedLabel: "Recommended" });
 </script>
 </body>
 </html>
